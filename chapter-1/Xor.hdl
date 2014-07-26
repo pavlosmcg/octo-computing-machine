@@ -1,6 +1,6 @@
 /**
- *  Exclusive-or gate implemented as (a && not(b)) || (b && not(a))
- *  Requires 9 Nand chips
+ *  Exclusive-or gate implemented as Nand(Nand(a,Nand(a,b)),Nand(b,Nand(a,b)))
+ *  Requires 4 Nand chips
  */
 
 CHIP Xor {
@@ -9,9 +9,8 @@ CHIP Xor {
     OUT out;
 
     PARTS:
-    Not(in=a, out=nota);
-    Not(in=b, out=notb);
-    And(a=a, b=notb, out=w1);
-    And(a=nota, b=b, out=w2);
-    Or(a=w1, b=w2, out=out);
+    Nand(a=a,b=b,out=nandab);
+    Nand(a=a,b=nandab,out=w1);
+    Nand(a=b,b=nandab,out=w2);
+    Nand(a=w1,b=w2,out=out);
 }
