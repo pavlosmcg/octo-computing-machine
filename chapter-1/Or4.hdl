@@ -1,0 +1,12 @@
+/**
+ * 4-bit bitwise Or gate: for i=0..3 out[i] = a[i] or b[i].
+ */
+
+CHIP Or4 {
+    IN a[4], b[4];
+    OUT out[4];
+
+    PARTS:
+    Or2(a[0..1]=a[0..1],b[0..1]=b[0..1],out[0..1]=out[0..1]);
+    Or2(a[0..1]=a[2..3],b[0..1]=b[2..3],out[0..1]=out[2..3]);
+}
