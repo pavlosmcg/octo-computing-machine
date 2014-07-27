@@ -1,0 +1,12 @@
+/**
+ * 16-bit Not gate: for i=0..15: out[i] = not in[i]
+ */
+
+CHIP Not16 {
+    IN in[16];
+    OUT out[16];
+
+    PARTS:
+    Not8(in[0..7]=in[0..7],out[0..7]=out[0..7]);
+    Not8(in[0..7]=in[8..15],out[0..7]=out[8..15]);
+}

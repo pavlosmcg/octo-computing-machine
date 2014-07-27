@@ -1,0 +1,12 @@
+/**
+ * 8-bit Not gate: for i=0..7: out[i] = not in[i]
+ */
+
+CHIP Not8 {
+    IN in[8];
+    OUT out[8];
+
+    PARTS:
+    Not4(in[0..3]=in[0..3],out[0..3]=out[0..3]);
+    Not4(in[0..3]=in[4..7],out[0..3]=out[4..7]);
+}
