@@ -1,0 +1,12 @@
+/**
+ * 16-bit-wise and gate: for i = 0..15: out[i] = a[i] and b[i]
+ */
+
+CHIP And16 {
+    IN a[16], b[16];
+    OUT out[16];
+
+    PARTS:
+    And8(a[0..7]=a[0..7],b[0..7]=b[0..7],out[0..7]=out[0..7]);
+    And8(a[0..7]=a[8..15],b[0..7]=b[8..15],out[0..7]=out[8..15]);
+}
