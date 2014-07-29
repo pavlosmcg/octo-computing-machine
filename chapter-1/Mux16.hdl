@@ -6,9 +6,7 @@ CHIP Mux16 {
     IN a[16], b[16], sel;
     OUT out[16];
 
-    PARTS:
-    Not(in=sel,out=notsel);
-    
+    PARTS:  
     Mux8(a[0..7]=a[0..7],b[0..7]=b[0..7],sel=sel,out[0..7]=out[0..7]);
     Mux8(a[0..7]=a[8..15],b[0..7]=b[8..15],sel=sel,out[0..7]=out[8..15]);
 }
