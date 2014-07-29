@@ -1,0 +1,16 @@
+/**
+ * 4-way 4-bit multiplexor.
+ * out = a if sel==00
+ *       b if sel==01
+ *       c if sel==10
+ *       d if sel==11
+ */
+
+CHIP Mux4Way4 {
+    IN a[4], b[4], c[4], d[4], sel[2];
+    OUT out[4];
+
+    PARTS:
+    Mux4Way2(a=a[0..1],b=b[0..1],c=c[0..1],d=d[0..1],sel=sel,out=out[0..1]);
+    Mux4Way2(a=a[2..3],b=b[2..3],c=c[2..3],d=d[2..3],sel=sel,out=out[2..3]);
+}
