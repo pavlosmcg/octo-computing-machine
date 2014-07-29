@@ -1,0 +1,14 @@
+/**
+ * 8-way or gate: out = in[0] or in[1] or ... or in[7].
+ */
+
+CHIP Or8Way {
+    IN in[8];
+    OUT out;
+
+    PARTS:
+    Or4Way(in=in[0..3],out=w1);
+    Or4Way(in=in[4..7],out=w2);
+    Or(a=w1,b=w2,out=out);
+
+}
