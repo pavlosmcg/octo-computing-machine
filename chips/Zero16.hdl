@@ -1,0 +1,12 @@
+/**
+ * 16-bit zeroer. Every output bit is zero if zx is true, otherwise output == input
+ */
+
+  
+CHIP Zero16 {
+    IN in[16], zx;
+    OUT out[16];
+
+    PARTS:
+    Mux16(a=in,b=false,sel=zx,out=out);
+}
