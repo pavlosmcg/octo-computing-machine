@@ -1,0 +1,13 @@
+/**
+ * 16-bit negator. Output is bitwise not if nx is true, otherwise output == input
+ */
+
+  
+CHIP Neg16 {
+    IN in[16], nx;
+    OUT out[16];
+
+    PARTS:
+    Not16(in=in,out=notin);
+    Mux16(a=in,b=notin,sel=nx,out=out);
+}
