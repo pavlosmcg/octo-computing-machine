@@ -50,15 +50,14 @@ CHIP ALU {
     Neg16(in=y1,nx=ny,out=y2);
 
     // 2's compliment add or bitwise and depending on f
-    And16(a=x2,b=y2,out=anded);
-    Add16(a=x2,b=y2,out=added);
-    Mux16(a=anded,b=added,sel=f,out=answer);
+    And16(a=x2,b=y2,out=w1);
+    Add16(a=x2,b=y2,out=w2);
+    Mux16(a=w1,b=w2,sel=f,out=w3);
 
     // negate the output according to 'no'
-    Neg16(in=answer,nx=no,out=neganswer,out[15]=ng);
-    
+    Neg16(in=w3,nx=no,out=w4,out=out,out[15]=ng);
+       
     // set zr
-    
-    // set ng
+    Nor16Way(in=w4,out=zr);
     
 }
