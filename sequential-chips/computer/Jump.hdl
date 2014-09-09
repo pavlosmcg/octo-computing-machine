@@ -1,0 +1,46 @@
+/**
+ * Decides whether to jump based on combinatorial logic of 
+ * j flags in the instruction and ng and zr values from ALU.
+ * Output is asserted when the PC should be loaded with a new
+ * value of instruction address to jump to, otherwise output
+ * of zero means increment the PC as usual.
+ *
+ * Logic (J1 - jump when less than zero, J2 - jump when equal 
+ * to zero, J3 -jump when greater than zero):
+ *
+ *      Jump? = ng.J1 + zr.J2 + not(ng).not(zr).J3   
+ *      (16 Nand gates)
+ *
+ * Can be reduced to:
+ *
+ *      Jump? = Nand(
+ *                  And(Nand(ng,J1),Nand(zr,J2)),
+ *                  Nand(And(not(ng),not(zr)),J3)
+ *                  )
+ *      (10 Nand gates)
+ */
+
+CHIP Jump {
+    IN j1,j2,j3,ng,zr;
+    OUT out;
+
+    PARTS:
+    Not(in=ng,out=notng);
+    Not(in=zr,out=notzr);
+    
+    // LHS
+    Nand(a=ng,b=j1,out=lhs1);
+    Nand(a=zr,b=j2,out=lhs2);
+    And(a=lhs1,b=lhs2,out=lhs);
+    
+    // RHS
+    And(a=notng,b=notzr,out=rhs1);
+    Nand(a=rhs1,b=j3,out=rhs);
+    
+    // Output
+    Nand(a=lhs,b=rhs,out=out);
+}
+
+
+
+
