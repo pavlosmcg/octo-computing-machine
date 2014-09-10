@@ -41,7 +41,7 @@ CHIP CPU {
     
     // ALU - use A register value for y when 'c' bit is zero, otherwise use inM for y
     Mux16(a=a,b=inM,sel=instruction[12],out=y);
-    ALU(x=d, y=y,
+    ALU(x=d,y=y,
         zx=instruction[11],
         nx=instruction[10],
         zy=instruction[9],
@@ -58,12 +58,15 @@ CHIP CPU {
     Mux16(a=instruction,b=aluout,sel=instruction[15],out=areginput);
     ARegister(in=areginput,load=loada,out=a,out[0..14]=addressM[0..14]);
     
-    // writeM output
+    // writeM output - true if C instruction and d3 is asserted
     And(a=instruction[15],b=instruction[3],out=writeM);
     
-    // PC - if not jumping, the counter will be incremented
+    // Jump logic - output is asserted if a jump should be made
     Jump(j1=instruction[2],j2=instruction[1],j3=instruction[0],ng=ng,zr=zr,out=jump);
-    Mux(a=false,b=jump,sel=instruction[15],out=loadpc);
+    
+    // PC - only load value from A register if C instruction and jump condition is met
+    // Otherwise, the counter will be routinely incremented. 
+    And(a=instruction[15],b=jump,out=loadpc);
     Not(in=loadpc,out=incpc);
     PC(in=a,load=loadpc,inc=incpc,reset=reset,out[0..14]=pc[0..14]);
 }
