@@ -51,10 +51,9 @@ CHIP CPU {
         zr=zr,ng=ng,out=aluout,out=outM);
     
     // A register - only load if A instruction or d1 is asserted
-    // following two lines could be rewritten as nand(inst[15],not(inst[5]))
-    Not(in=instruction[15],out=ainst);
-    Or(a=ainst,b=instruction[5],out=loada);
-    // choose between loading output of ALU (if C instruction) or address from A instruction
+    Not(in=instruction[5],out=notd1);
+    Nand(a=instruction[15],b=notd1,out=loada);
+    // choose between loading the A register with output of ALU (if C instruction) or address from A instruction
     Mux16(a=instruction,b=aluout,sel=instruction[15],out=areginput);
     ARegister(in=areginput,load=loada,out=a,out[0..14]=addressM[0..14]);
     
@@ -64,8 +63,7 @@ CHIP CPU {
     // Jump logic - output is asserted if a jump should be made
     Jump(j1=instruction[2],j2=instruction[1],j3=instruction[0],ng=ng,zr=zr,out=jump);
     
-    // PC - only load value from A register if C instruction and jump condition is met
-    // Otherwise, the counter will be routinely incremented. 
+    // PC - only load value from A register if C instruction and jump condition is met. Otherwise, the counter will be routinely incremented. 
     And(a=instruction[15],b=jump,out=loadpc);
     Not(in=loadpc,out=incpc);
     PC(in=a,load=loadpc,inc=incpc,reset=reset,out[0..14]=pc[0..14]);
