@@ -96,7 +96,6 @@ furry-octo-computing-machine
 | 11111|0111111111111111|  0  |      1|   0   | 1000|    0|      1 |
 | 11111|0111111111111111|  0  |      1|   0   |32767|    1|      1 |
 
-
     The kingdom is ransacked, the jewels all taken back
     And the chopper descends
     They're hidden in the back, with a message on a half-baked tape
