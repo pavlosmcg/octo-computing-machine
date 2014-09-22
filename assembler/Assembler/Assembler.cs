@@ -8,7 +8,7 @@ namespace Assembler
     {
         public string[] Assemble(string[] lines)
         {
-            var assembled = lines.Select().Where(l => !string.IsNullOrEmpty(l)).ToArray();
+            var assembled = lines.Select(l => l.Trim()).Where(l => !string.IsNullOrEmpty(l)).ToArray();
 
             return assembled;
         }
