@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Assembler
 {
@@ -8,7 +9,7 @@ namespace Assembler
     {
         public string[] Assemble(string[] lines)
         {
-            var assembled = lines.Select(l => l.Trim()).Where(l => !string.IsNullOrEmpty(l)).ToArray();
+            var assembled = lines.Select(l => Regex.Replace(l, @"\s+", "")).Where(l => !string.IsNullOrEmpty(l)).ToArray();
 
             return assembled;
         }
