@@ -9,7 +9,7 @@ namespace Assembler
     {
         public string[] Assemble(string[] lines)
         {
-            var assembled = lines.Select(l => Regex.Replace(l, @"\s+", "")).Where(l => !string.IsNullOrEmpty(l)).ToArray();
+            var assembled = lines.Select(l => Regex.Replace(l, @"\s+", "")).Where(l => !string.IsNullOrEmpty(l) && !l.StartsWith("//")).ToArray();
 
             return assembled;
         }

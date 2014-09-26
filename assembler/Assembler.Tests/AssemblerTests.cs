@@ -6,7 +6,7 @@ namespace Assembler.Tests
     public class AssemblerTests
     {
         [Test]
-        public void Assembler_Removes_Empty_Lines()
+        public void Assemble_Removes_Empty_Lines()
         {
             // arrange
             string[] inputLines = {"blorg", "fester", "", "framistan"};
@@ -20,7 +20,7 @@ namespace Assembler.Tests
         }
 
         [Test]
-        public void Assembler_Removes_Whitespace_Lines()
+        public void Assemble_Removes_Whitespace_Lines()
         {
             // arrange
             string[] inputLines = { "blorg", "fester", "    ", "framistan" };
@@ -34,7 +34,7 @@ namespace Assembler.Tests
         }
 
         [Test]
-        public void Assembler_Removes_All_Whitespace()
+        public void Assemble_Removes_All_Whitespace()
         {
             // arrange
             string[] inputLines = { "blorg = plotz", "fes ter", " framistan" };
@@ -47,6 +47,20 @@ namespace Assembler.Tests
             Assert.AreEqual("blorg=plotz", assembledLines[0]);
             Assert.AreEqual("fester", assembledLines[1]);
             Assert.AreEqual("framistan", assembledLines[2]);
+        }
+
+        [Test]
+        public void Assemble_Removes_Comment_Lines()
+        {
+            // arrange
+            string[] inputLines = { "// this is a comment", "a=b", "hello" };
+            var assember = new Assembler();
+
+            // act
+            string[] assembledLines = assember.Assemble(inputLines);
+
+            // assert
+            Assert.AreEqual(2, assembledLines.Length);
         }
     }
 }
