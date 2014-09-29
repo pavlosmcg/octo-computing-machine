@@ -8,12 +8,18 @@ namespace Assembler
 {
     public class Assembler
     {
+        private readonly Sanitiser _sanitiser;
+
+        public Assembler(Sanitiser sanitiser)
+        {
+            _sanitiser = sanitiser;
+        }
+
+        public Assembler() : this(new Sanitiser()) { }
+        
         public string[] Assemble(string[] lines)
         {
-            var assembled = lines
-                .Select(l => Regex.Replace(l, @"\s+", ""))
-                .Select(l => l.Split(new[] { "//" }, StringSplitOptions.None)[0])
-                .Where(l => !string.IsNullOrEmpty(l)).ToArray();
+            var assembled = _sanitiser.Sanitise(lines);
 
             return assembled;
         }
