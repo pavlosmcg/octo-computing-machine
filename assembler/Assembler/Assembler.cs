@@ -6,19 +6,18 @@ using System.Text.RegularExpressions;
 
 namespace Assembler
 {
-    public class Assembler
+    public class Assembler : IAssembler
     {
-        private readonly Sanitiser _sanitiser;
+        private readonly ISanitiser _sanitiser;
 
-        public Assembler(Sanitiser sanitiser)
+        public Assembler(ISanitiser sanitiser)
         {
             _sanitiser = sanitiser;
         }
-
-        public Assembler() : this(new Sanitiser()) { }
         
         public string[] Assemble(string[] lines)
         {
+            // get the array of lines cleaned up before parsing
             var assembled = _sanitiser.Sanitise(lines);
 
             return assembled;

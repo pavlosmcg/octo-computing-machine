@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Assembler
 {
-    public class Sanitiser
+    public class Sanitiser : ISanitiser
     {
          public string[] Sanitise(string[] lines)
          {
