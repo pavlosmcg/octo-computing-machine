@@ -6,12 +6,21 @@ namespace Assembler.Sanitising
 {
     public class Sanitiser : ISanitiser
     {
-         public string[] Sanitise(string[] lines)
-         {
-             return lines
-                .Select(l => Regex.Replace(l, @"\s+", ""))
-                .Select(l => l.Split(new[] { "//" }, StringSplitOptions.None)[0])
+        private readonly IWhitespaceRemover _whitespaceRemover;
+        private readonly ICommentRemover _commentRemover;
+
+        public Sanitiser(IWhitespaceRemover whitespaceRemover, ICommentRemover commentRemover)
+        {
+            _whitespaceRemover = whitespaceRemover;
+            _commentRemover = commentRemover;
+        }
+
+        public string[] Sanitise(string[] lines)
+        {
+            return lines
+                .Select(l => _whitespaceRemover.RemoveWhiteSpace(l))
+                .Select(l => _commentRemover.RemoveComments(l))
                 .Where(l => !string.IsNullOrEmpty(l)).ToArray();
-         }
+        }
     }
 }

@@ -51,8 +51,12 @@
     <Compile Include="NinjectBindings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sanitising\CommentRemover.cs" />
+    <Compile Include="Sanitising\ICommentRemover.cs" />
     <Compile Include="Sanitising\ISanitiser.cs" />
+    <Compile Include="Sanitising\IWhitespaceRemover.cs" />
     <Compile Include="Sanitising\Sanitiser.cs" />
+    <Compile Include="Sanitising\WhitespaceRemover.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

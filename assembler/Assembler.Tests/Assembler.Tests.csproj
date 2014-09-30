@@ -48,7 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sanitising\CommentRemoverTests.cs" />
     <Compile Include="Sanitising\SanitiserTests.cs" />
+    <Compile Include="Sanitising\WhiteSpaceRemoverTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
