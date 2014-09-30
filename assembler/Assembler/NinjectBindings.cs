@@ -1,4 +1,6 @@
-﻿using Ninject.Modules;
+﻿using Assembler.Binary;
+using Assembler.Sanitising;
+using Ninject.Modules;
 
 namespace Assembler
 {
@@ -6,7 +8,7 @@ namespace Assembler
     {
         public override void Load()
         {
-            Bind<IAssembler>().To<Assembler>();
+            Bind<IAssembler>().To<HackAssembler>();
             Bind<ISanitiser>().To<Sanitiser>();
         }
     }

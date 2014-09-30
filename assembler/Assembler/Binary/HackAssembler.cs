@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
+using Assembler.Sanitising;
 
-namespace Assembler
+namespace Assembler.Binary
 {
-    public class Assembler : IAssembler
+    public class HackAssembler : IAssembler
     {
         private readonly ISanitiser _sanitiser;
 
-        public Assembler(ISanitiser sanitiser)
+        public HackAssembler(ISanitiser sanitiser)
         {
             _sanitiser = sanitiser;
         }

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Assembler
+namespace Assembler.Sanitising
 {
     public class Sanitiser : ISanitiser
     {

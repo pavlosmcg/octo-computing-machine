@@ -46,13 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assembler.cs" />
-    <Compile Include="IAssembler.cs" />
-    <Compile Include="ISanitiser.cs" />
+    <Compile Include="Binary\HackAssembler.cs" />
+    <Compile Include="Binary\IAssembler.cs" />
     <Compile Include="NinjectBindings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sanitiser.cs" />
+    <Compile Include="Sanitising\ISanitiser.cs" />
+    <Compile Include="Sanitising\Sanitiser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

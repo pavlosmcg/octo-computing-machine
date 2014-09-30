@@ -1,4 +1,4 @@
-﻿namespace Assembler
+﻿namespace Assembler.Sanitising
 {
     public interface ISanitiser
     {

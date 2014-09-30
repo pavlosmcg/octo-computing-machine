@@ -1,6 +1,7 @@
-﻿using NUnit.Framework;
+﻿using Assembler.Sanitising;
+using NUnit.Framework;
 
-namespace Assembler.Tests
+namespace Assembler.Tests.Sanitising
 {
     [TestFixture]
     public class SanitiserTests

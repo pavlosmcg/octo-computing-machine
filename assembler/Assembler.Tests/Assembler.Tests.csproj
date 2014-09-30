@@ -47,8 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SanitiserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sanitising\SanitiserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

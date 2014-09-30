@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Assembler.Binary;
 using Ninject;
 
 namespace Assembler
@@ -28,7 +29,7 @@ namespace Assembler
             string[] lines = System.IO.File.ReadAllLines(args[0]);
             string[] assembledLines = assember.Assemble(lines);
 
-            // output to console
+
             foreach (var line in assembledLines)
             {
                 Console.WriteLine(line);
