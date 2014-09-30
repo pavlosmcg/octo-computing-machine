@@ -10,6 +10,8 @@ namespace Assembler
         {
             Bind<IAssembler>().To<HackAssembler>();
             Bind<ISanitiser>().To<Sanitiser>();
+            Bind<IWhitespaceRemover>().To<WhitespaceRemover>();
+            Bind<ICommentRemover>().To<CommentRemover>();
         }
     }
 }
