@@ -49,6 +49,9 @@
     <Compile Include="Binary\HackAssembler.cs" />
     <Compile Include="Binary\IAssembler.cs" />
     <Compile Include="NinjectBindings.cs" />
+    <Compile Include="Parsing\IInstructionTypeParser.cs" />
+    <Compile Include="Parsing\InstructionType.cs" />
+    <Compile Include="Parsing\InstructionTypeParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sanitising\CommentRemover.cs" />

@@ -1,4 +1,5 @@
 ﻿using Assembler.Binary;
+using Assembler.Parsing;
 using Assembler.Sanitising;
 using Ninject.Modules;
 
@@ -12,6 +13,7 @@ namespace Assembler
             Bind<ISanitiser>().To<Sanitiser>();
             Bind<IWhitespaceRemover>().To<WhitespaceRemover>();
             Bind<ICommentRemover>().To<CommentRemover>();
+            Bind<IInstructionTypeParser>().To<InstructionTypeParser>();
         }
     }
 }
