@@ -6,34 +6,37 @@ namespace Assembler.Tests.Sanitising
     [TestFixture]
     public class CommentRemoverTests
     {
-        [Test]
-        public void RemoveComments_Clears_Comment_Lines()
+        [TestCase("// this is a comment", "")]
+        [TestCase("a=b", "a=b")]
+        [TestCase(" hello ", " hello ")]
+        [TestCase("//", "")]
+        [TestCase(" //framistan", " ")]
+        public void RemoveComments_Clears_Comment_Lines(string input, string expected)
         {
             // arrange
-            //string[] inputLines = { "// this is a comment", "a=b", "hello" };
-            var input = "// this is a comment";
             var commentRemover = new CommentRemover();
 
             // act
             string cleanedLine = commentRemover.RemoveComments(input);
 
             // assert
-            Assert.AreEqual(string.Empty, cleanedLine);
+            Assert.AreEqual(expected, cleanedLine);
         }
 
-        [Test]
-        public void RemoveComments_Removes_End_Of_Line_Comments()
+        [TestCase("blorg = plotz // set blorg equal to plotz", "blorg = plotz ")]
+        [TestCase("fester", "fester")]
+        [TestCase("a=b", "a=b")]
+        [TestCase("x // abc", "x ")]
+        public void RemoveComments_Removes_End_Of_Line_Comments(string input, string expected)
         {
             // arrange
-            //string[] inputLines = { "blorg = plotz // set blorg equal to plotz", "fester", "//framistan", "//", "x // abc" };
-            var input = "blorg = plotz // set blorg equal to plotz";
             var commentRemover = new CommentRemover();
 
             // act
             string cleanedLine = commentRemover.RemoveComments(input);
 
             // assert
-            Assert.AreEqual("blorg = plotz ", cleanedLine);
+            Assert.AreEqual(expected, cleanedLine);
         }
     }
 }

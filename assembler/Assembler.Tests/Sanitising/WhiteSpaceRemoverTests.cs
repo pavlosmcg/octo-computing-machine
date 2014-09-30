@@ -6,19 +6,21 @@ namespace Assembler.Tests.Sanitising
     [TestFixture]
     public class WhiteSpaceRemoverTests
     {
-        [Test]
-        public void RemoveWhiteSpace_Removes_All_Whitespace_From_Line()
+        [TestCase("blorg = plotz", "blorg=plotz")]
+        [TestCase("fes ter", "fester")]
+        [TestCase(" framistan", "framistan")]
+        [TestCase(" h e     l l o", "hello")]
+        [TestCase("@world   ", "@world")]
+        public void RemoveWhiteSpace_Removes_All_Whitespace_From_Line(string input, string expected)
         {
             // arrange
-            //string[] inputLine = { "blorg = plotz", "fes ter", " framistan" };
-            var input = "blorg = plotz";
             var whitespaceRemover = new WhitespaceRemover();
 
             // act
             string cleanedLine = whitespaceRemover.RemoveWhiteSpace(input);
 
             // assert
-            Assert.AreEqual("blorg=plotz", cleanedLine);
+            Assert.AreEqual(expected, cleanedLine);
         }
     }
 }
