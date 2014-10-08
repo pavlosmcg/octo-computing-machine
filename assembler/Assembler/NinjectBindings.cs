@@ -10,10 +10,15 @@ namespace Assembler
         public override void Load()
         {
             Bind<IAssembler>().To<HackAssembler>();
+            
             Bind<ISanitiser>().To<Sanitiser>();
             Bind<IWhitespaceRemover>().To<WhitespaceRemover>();
             Bind<ICommentRemover>().To<CommentRemover>();
+            
             Bind<ILineParser>().To<LineParser>();
+            Bind<IInstructionParser>().To<AddressInstructionParser>();
+            Bind<IInstructionParser>().To<ComputeInstructionParser>();
+            Bind<IInstructionParser>().To<LabelInstructionParser>();
         }
     }
 }
