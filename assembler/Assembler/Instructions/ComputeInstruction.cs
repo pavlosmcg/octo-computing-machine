@@ -2,7 +2,7 @@
 
 namespace Assembler.Instructions
 {
-    public struct ComputeInstruction : IEquatable<ComputeInstruction>
+    public struct ComputeInstruction : IInstruction, IEquatable<ComputeInstruction>
     {
         private readonly ComputeDestinationType _destinationType;
         private readonly string _calculation;
@@ -28,6 +28,11 @@ namespace Assembler.Instructions
         public ComputeJumpType JumpType
         {
             get { return _jumpType; }
+        }
+
+        public void Accept<T>(IInstructionVisitor<T> instructionVisitor)
+        {
+            instructionVisitor.VisitInstruction(this);
         }
 
         public bool Equals(ComputeInstruction other)

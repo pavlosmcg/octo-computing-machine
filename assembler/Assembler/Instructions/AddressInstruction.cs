@@ -2,7 +2,7 @@
 
 namespace Assembler.Instructions
 {
-    public struct AddressInstruction: IEquatable<AddressInstruction>
+    public struct AddressInstruction : IInstruction, IEquatable<AddressInstruction>
     {
         private readonly int _address;
 
@@ -14,6 +14,11 @@ namespace Assembler.Instructions
         public int Address
         {
             get { return _address; }
+        }
+
+        public void Accept<T>(IInstructionVisitor<T> instructionVisitor)
+        {
+            instructionVisitor.VisitInstruction(this);
         }
 
         public bool Equals(AddressInstruction other)

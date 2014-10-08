@@ -48,13 +48,16 @@
   <ItemGroup>
     <Compile Include="Binary\HackAssembler.cs" />
     <Compile Include="Binary\IAssembler.cs" />
-    <Compile Include="Instructions\Compute.cs" />
+    <Compile Include="Instructions\ComputeInstruction.cs" />
+    <Compile Include="Instructions\ComputeJumpType.cs" />
     <Compile Include="Instructions\ComputeDestinationType.cs" />
-    <Compile Include="Instructions\Address.cs" />
+    <Compile Include="Instructions\AddressInstruction.cs" />
+    <Compile Include="Instructions\IInstruction.cs" />
+    <Compile Include="Instructions\IInstructionVisitor.cs" />
+    <Compile Include="Instructions\LabelInstruction.cs" />
     <Compile Include="NinjectBindings.cs" />
-    <Compile Include="Parsing\IInstructionTypeParser.cs" />
-    <Compile Include="Parsing\InstructionType.cs" />
-    <Compile Include="Parsing\InstructionTypeParser.cs" />
+    <Compile Include="Parsing\IInstructionParser.cs" />
+    <Compile Include="Parsing\InstructionParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sanitising\CommentRemover.cs" />

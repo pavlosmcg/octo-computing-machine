@@ -1,4 +1,6 @@
-﻿using Assembler.Parsing;
+﻿using System;
+using Assembler.Instructions;
+using Assembler.Parsing;
 using NUnit.Framework;
 
 namespace Assembler.Tests.Parsing
@@ -6,24 +8,24 @@ namespace Assembler.Tests.Parsing
     [TestFixture]
     public class InstructionTypeParserTests
     {
-        [TestCase("@1234", InstructionType.A)]
-        [TestCase("@blorg", InstructionType.A)]
-        [TestCase("@ fester", InstructionType.A)]
-        [TestCase("M=D", InstructionType.C)]
-        [TestCase("D=A;JMP", InstructionType.C)]
-        [TestCase("0;JMP", InstructionType.C)]
-        [TestCase("(LOOP)", InstructionType.Label)]
-        [TestCase("what=ever", InstructionType.C)]
-        public void GetInstructionType(string input, InstructionType expected)
+        [TestCase("@1234", typeof (AddressInstruction))]
+        [TestCase("@blorg", typeof(AddressInstruction))]
+        [TestCase("@ fester", typeof(AddressInstruction))]
+        [TestCase("M=D", typeof(ComputeInstruction))]
+        [TestCase("D=A;JMP", typeof(ComputeInstruction))]
+        [TestCase("0;JMP", typeof(ComputeInstruction))]
+        [TestCase("(LOOP)", typeof(LabelInstruction))]
+        [TestCase("what=ever", typeof(ComputeInstruction))]
+        public void ParseInstruction_Returns_Correct_Instruction_Type(string input, Type expected)
         {
             // arrange
-            var instructionTypeParser = new InstructionTypeParser();
+            var instructionTypeParser = new InstructionParser();
 
             // act
-            var instructionType = instructionTypeParser.GetInstructionType(input);
+            IInstruction instruction = instructionTypeParser.ParseInstruction(input);
 
             // assert
-            Assert.AreEqual(expected, instructionType);
+            Assert.AreEqual(expected, instruction.GetType());
         }
     }
 }
