@@ -4,20 +4,21 @@ namespace Assembler.Parsing
 {
     public class LineParser : ILineParser
     {
-        public IInstruction ParseInstruction(string line)
-        {
-            IInstruction result;
+        private readonly IInstructionParser[] _instructionParsers;
 
-            switch (line[0])
+        public LineParser(IInstructionParser[] instructionParsers)
+        {
+            _instructionParsers = instructionParsers;
+        }
+
+        public IInstruction ParseLine(string line)
+        {
+            IInstruction result = new UnknownInstruction();
+
+            foreach (IInstructionParser instructionParser in _instructionParsers)
             {
-                case '@':
-                    result = new AddressInstruction();
-                    break;
-                case '(':
-                    result = new LabelInstruction();
-                    break;
-                default:
-                    result = new ComputeInstruction();
+                result = instructionParser.ParseInstruction(line);
+                if (result.GetType() != typeof (UnknownInstruction))
                     break;
             }
 

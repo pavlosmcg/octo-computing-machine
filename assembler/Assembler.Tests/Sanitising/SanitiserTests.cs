@@ -26,7 +26,7 @@ namespace Assembler.Tests.Sanitising
         }
 
         [Test]
-        public void Integration_Sanitise_Removes_Whitespace_Lines()
+        public void IntegrationTest_Sanitise_Removes_Whitespace_Lines()
         {
             // arrange
             string[] inputLines = { "blorg", "fester", "    ", "framistan" };

@@ -16,13 +16,19 @@ namespace Assembler.Tests.Parsing
         [TestCase("0;JMP", typeof(ComputeInstruction))]
         [TestCase("(LOOP)", typeof(LabelInstruction))]
         [TestCase("what=ever", typeof(ComputeInstruction))]
-        public void ParseInstruction_Returns_Correct_Instruction_Type(string input, Type expected)
+        public void IntegrationTest_ParseLine_Returns_Correct_Instruction_Type(string input, Type expected)
         {
             // arrange
-            var lineParser = new LineParser();
+            IInstructionParser[] parsers =
+                {
+                    new AddressInstructionParser(), 
+                    new ComputeInstructionParser(),
+                    new LabelInstructionParser()
+                };
+            var lineParser = new LineParser(parsers);
 
             // act
-            IInstruction instruction = lineParser.ParseInstruction(input);
+            IInstruction instruction = lineParser.ParseLine(input);
 
             // assert
             Assert.AreEqual(expected, instruction.GetType());
