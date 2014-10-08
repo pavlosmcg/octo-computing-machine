@@ -1,12 +1,14 @@
-﻿namespace Assembler.Instructions
+﻿using System;
+
+namespace Assembler.Instructions
 {
-    public struct Compute
+    public struct ComputeInstruction : IEquatable<ComputeInstruction>
     {
         private readonly ComputeDestinationType _destinationType;
         private readonly string _calculation;
         private readonly ComputeJumpType _jumpType;
 
-        public Compute(ComputeDestinationType destinationType, string calculation, ComputeJumpType jumpType)
+        public ComputeInstruction(ComputeDestinationType destinationType, string calculation, ComputeJumpType jumpType)
         {
             _destinationType = destinationType;
             _calculation = calculation;
@@ -26,6 +28,20 @@
         public ComputeJumpType JumpType
         {
             get { return _jumpType; }
+        }
+
+        public bool Equals(ComputeInstruction other)
+        {
+            if (other.DestinationType != DestinationType)
+                return false;
+
+            if (other.Calculation != Calculation)
+                return false;
+
+            if (other.JumpType != JumpType)
+                return false;
+
+            return true;
         }
     }
 }
