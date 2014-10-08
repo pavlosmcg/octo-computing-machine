@@ -2,13 +2,13 @@
 
 namespace Assembler.Parsing
 {
-    public class InstructionParser : IInstructionParser
+    public class LineParser : ILineParser
     {
-        public IInstruction ParseInstruction(string instruction)
+        public IInstruction ParseInstruction(string line)
         {
             IInstruction result;
 
-            switch (instruction[0])
+            switch (line[0])
             {
                 case '@':
                     result = new AddressInstruction();

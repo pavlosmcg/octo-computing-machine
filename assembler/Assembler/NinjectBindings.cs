@@ -13,7 +13,7 @@ namespace Assembler
             Bind<ISanitiser>().To<Sanitiser>();
             Bind<IWhitespaceRemover>().To<WhitespaceRemover>();
             Bind<ICommentRemover>().To<CommentRemover>();
-            Bind<IInstructionParser>().To<InstructionParser>();
+            Bind<ILineParser>().To<LineParser>();
         }
     }
 }

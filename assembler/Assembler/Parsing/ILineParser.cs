@@ -2,7 +2,7 @@
 
 namespace Assembler.Parsing
 {
-    public interface IInstructionParser
+    public interface ILineParser
     {
         IInstruction ParseInstruction(string line);
     }

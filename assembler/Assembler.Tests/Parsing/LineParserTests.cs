@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Assembler.Tests.Parsing
 {
     [TestFixture]
-    public class InstructionTypeParserTests
+    public class LineParserTests
     {
         [TestCase("@1234", typeof (AddressInstruction))]
         [TestCase("@blorg", typeof(AddressInstruction))]
@@ -19,10 +19,10 @@ namespace Assembler.Tests.Parsing
         public void ParseInstruction_Returns_Correct_Instruction_Type(string input, Type expected)
         {
             // arrange
-            var instructionTypeParser = new InstructionParser();
+            var lineParser = new LineParser();
 
             // act
-            IInstruction instruction = instructionTypeParser.ParseInstruction(input);
+            IInstruction instruction = lineParser.ParseInstruction(input);
 
             // assert
             Assert.AreEqual(expected, instruction.GetType());
