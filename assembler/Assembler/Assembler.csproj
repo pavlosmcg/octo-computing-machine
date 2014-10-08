@@ -48,6 +48,9 @@
   <ItemGroup>
     <Compile Include="Binary\HackAssembler.cs" />
     <Compile Include="Binary\IAssembler.cs" />
+    <Compile Include="Instructions\Compute.cs" />
+    <Compile Include="Instructions\ComputeDestinationType.cs" />
+    <Compile Include="Instructions\Address.cs" />
     <Compile Include="NinjectBindings.cs" />
     <Compile Include="Parsing\IInstructionTypeParser.cs" />
     <Compile Include="Parsing\InstructionType.cs" />
