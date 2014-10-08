@@ -1,6 +1,7 @@
 ﻿using System;
 using Assembler.Instructions;
 using Assembler.Parsing;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Assembler.Tests.Parsing
@@ -8,30 +9,44 @@ namespace Assembler.Tests.Parsing
     [TestFixture]
     public class LineParserTests
     {
-        [TestCase("@1234", typeof (AddressInstruction))]
-        [TestCase("@blorg", typeof(AddressInstruction))]
-        [TestCase("@ fester", typeof(AddressInstruction))]
-        [TestCase("M=D", typeof(ComputeInstruction))]
-        [TestCase("D=A;JMP", typeof(ComputeInstruction))]
-        [TestCase("0;JMP", typeof(ComputeInstruction))]
-        [TestCase("(LOOP)", typeof(LabelInstruction))]
-        [TestCase("what=ever", typeof(ComputeInstruction))]
-        public void IntegrationTest_ParseLine_Returns_Correct_Instruction_Type(string input, Type expected)
+        [Test]
+        public void ParseLine_Returns_Correct_InstructionType_When_Line_Is_Matched_By_A_Parser()
         {
             // arrange
-            IInstructionParser[] parsers =
-                {
-                    new AddressInstructionParser(), 
-                    new ComputeInstructionParser(),
-                    new LabelInstructionParser()
-                };
+            const string line = "--zorf";
+            var matchingParser = Substitute.For<IInstructionParser>();
+            matchingParser.ParseInstruction(line).Returns(new AddressInstruction(1234));
+            var nonMatchingParser = Substitute.For<IInstructionParser>();
+            nonMatchingParser.ParseInstruction(line).Returns(new UnknownInstruction());
+
+            IInstructionParser[] parsers = {nonMatchingParser, matchingParser};
             var lineParser = new LineParser(parsers);
 
             // act
-            IInstruction instruction = lineParser.ParseLine(input);
+            IInstruction instruction = lineParser.ParseLine(line);
 
             // assert
-            Assert.AreEqual(expected, instruction.GetType());
+            Assert.AreEqual(typeof(AddressInstruction), instruction.GetType());
+        }
+
+        [Test]
+        public void ParseLine_Returns_UnknownInstructionType_When_Line_Is_Not_Matched_By_A_Parser()
+        {
+            // arrange
+            const string line = "--zorf";
+            var nonMatchingParser = Substitute.For<IInstructionParser>();
+            nonMatchingParser.ParseInstruction(line).Returns(new UnknownInstruction());
+            var anotherParser = Substitute.For<IInstructionParser>();
+            anotherParser.ParseInstruction(line).Returns(new UnknownInstruction());
+
+            IInstructionParser[] parsers = { nonMatchingParser, anotherParser };
+            var lineParser = new LineParser(parsers);
+
+            // act
+            IInstruction instruction = lineParser.ParseLine(line);
+
+            // assert
+            Assert.AreEqual(typeof(UnknownInstruction), instruction.GetType());
         }
     }
 }

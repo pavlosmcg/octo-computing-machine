@@ -26,11 +26,12 @@ namespace Assembler.Tests.Sanitising
         }
 
         [Test]
-        public void IntegrationTest_Sanitise_Removes_Whitespace_Lines()
+        public void Sanitise_Removes_Whitespace_Lines()
         {
             // arrange
             string[] inputLines = { "blorg", "fester", "    ", "framistan" };
-            IWhitespaceRemover whitespaceRemover = new WhitespaceRemover();
+            var whitespaceRemover = Substitute.For<IWhitespaceRemover>();
+            whitespaceRemover.RemoveWhiteSpace(Arg.Any<string>()).Returns(param => string.IsNullOrWhiteSpace((string)param[0]) ? "" : param[0]);
             var commentRemover = Substitute.For<ICommentRemover>();
             commentRemover.RemoveComments(Arg.Any<string>()).Returns(param => param[0]);
             var sanitiser = new Sanitiser(whitespaceRemover, commentRemover);
