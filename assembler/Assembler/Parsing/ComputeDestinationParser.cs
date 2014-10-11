@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Assembler.Instructions;
 
 namespace Assembler.Parsing
@@ -7,11 +8,24 @@ namespace Assembler.Parsing
     {
         public ComputeDestinationType ParseComputeDestination(string destination)
         {
-            if (string.IsNullOrEmpty(destination))
-                return ComputeDestinationType.None;
+            var destinationType = ComputeDestinationType.None;
 
-            //TODO Actually parse this!
-            throw new ArgumentException("Cannot parse compute instruction destination", destination);
+            if (string.IsNullOrEmpty(destination))
+                return destinationType;
+
+            if (destination.Count(c => !(c == 'A' || c == 'M' || c == 'D')) > 0)
+                throw new ArgumentException("Cannot parse compute instruction destination", destination);
+
+            if (destination.Contains("A"))
+                destinationType |= ComputeDestinationType.AddressRegister;
+
+            if (destination.Contains("M"))
+                destinationType |= ComputeDestinationType.Memory;
+
+            if (destination.Contains("D"))
+                destinationType |= ComputeDestinationType.DataRegister;
+
+            return destinationType;
         }
     }
 }
