@@ -18,16 +18,16 @@ namespace Assembler.Parsing
         public IInstruction ParseInstruction(string line)
         {
             // Regex below matches an instruction of the type [AMD=]M+D[;JMP], where [] are optional
-            const string pattern = @"(^|(^([AMD]+)=))([AMD10\+\-\!\&\|]+)((;([JMPGLTNEQ]+$))|$)";
-            var r = new Regex(pattern, RegexOptions.IgnoreCase);
-            Match match = r.Match(line);
+            const string pattern =
+                @"(^|(^(?<dest>[AMD]+)=))(?<comp>[AMD10\+\-\!\&\|]+)((;(?<jump>[JMPGLTNEQ]+)$)|$)";
+            Match match = new Regex(pattern, RegexOptions.IgnoreCase).Match(line);
 
             if (!match.Success)
                 return new UnknownInstruction(line);
 
-            string dest = match.Groups[3].Value;
-            string comp = match.Groups[4].Value;
-            string jump = match.Groups[7].Value;
+            string dest = match.Groups["dest"].Value;
+            string comp = match.Groups["comp"].Value;
+            string jump = match.Groups["jump"].Value;
 
             ComputeDestinationType destinationType;
             ComputeJumpType jumpType;
