@@ -1,5 +1,7 @@
-﻿using Assembler.Instructions;
+﻿using System;
+using Assembler.Instructions;
 using Assembler.Parsing;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Assembler.Tests.Parsing
@@ -8,27 +10,13 @@ namespace Assembler.Tests.Parsing
     public class ComputeInstructionParserTests
     {
         [Test]
-        public void ParseInstruction_Returns_ComputeInstruction_With_No_Destination_Or_Jump_When_Line_Does_Not_Contain_Equals_Or_Semicolon()
-        {
-            // arrange
-            const string line = "M+1";
-            var parser = new ComputeInstructionParser();
-
-            // act
-            IInstruction result = parser.ParseInstruction(line);
-
-            // assert 
-            Assert.AreEqual(typeof(ComputeInstruction), result.GetType());
-            Assert.AreEqual(ComputeDestinationType.None, ((ComputeInstruction)result).DestinationType);
-            Assert.AreEqual(ComputeJumpType.None, ((ComputeInstruction)result).JumpType);
-        }
-
-        [Test]
         public void ParseInstruction_Returns_UnkownInstruction_When_Line_Contains_More_Than_One_Equals()
         {
             // arrange
             const string line = "MD=1=1";
-            var parser = new ComputeInstructionParser();
+            var destinationParser = Substitute.For<IComputeDestinationParser>();
+            var jumpParser = Substitute.For<IComputeJumpParser>();
+            var parser = new ComputeInstructionParser(destinationParser, jumpParser);
 
             // act
             IInstruction result = parser.ParseInstruction(line);
@@ -42,7 +30,9 @@ namespace Assembler.Tests.Parsing
         {
             // arrange
             const string line = "M+1;JMP;JGT";
-            var parser = new ComputeInstructionParser();
+            var destinationParser = Substitute.For<IComputeDestinationParser>();
+            var jumpParser = Substitute.For<IComputeJumpParser>();
+            var parser = new ComputeInstructionParser(destinationParser, jumpParser);
 
             // act
             IInstruction result = parser.ParseInstruction(line);
@@ -51,81 +41,61 @@ namespace Assembler.Tests.Parsing
             Assert.AreEqual(typeof(UnknownInstruction), result.GetType());
         }
 
-        [Test]
-        public void ParseInstruction_Returns_ComputeInstruction_With_No_Jump_When_Line_Does_Not_Contain_Semicolon()
+        [TestCase("M+1", typeof(ComputeInstruction))]
+        [TestCase("M=1", typeof(ComputeInstruction))]
+        [TestCase("D=M+1;JGT", typeof(ComputeInstruction))]
+        [TestCase("0;JMP", typeof(ComputeInstruction))]
+        [TestCase("", typeof(UnknownInstruction))]
+        [TestCase("M=M+1=", typeof(UnknownInstruction))]
+        [TestCase("=M", typeof(UnknownInstruction))]
+        [TestCase("M=", typeof(UnknownInstruction))]
+        [TestCase(";JMP", typeof(UnknownInstruction))]
+        [TestCase(":JMP", typeof(UnknownInstruction))]
+        [TestCase("MDA=M-1;", typeof(UnknownInstruction))]
+        [TestCase("MD==1;JMP", typeof(UnknownInstruction))]
+        [TestCase("MD==1", typeof(UnknownInstruction))]
+        [TestCase("AMD=HH;;JGT", typeof(UnknownInstruction))]
+        [TestCase("AMD=X+1;JNE", typeof(UnknownInstruction))]
+        [TestCase("ZK=M+1;JEQ", typeof(UnknownInstruction))]
+        public void ParseInstruction_Returns_UnknownInstruction_When_Instruction_Is_Invalid(string line, Type expectedType)
         {
             // arrange
-            const string line = "MD=1";
-            var parser = new ComputeInstructionParser();
+            var destinationParser = Substitute.For<IComputeDestinationParser>();
+            var jumpParser = Substitute.For<IComputeJumpParser>();
+            var parser = new ComputeInstructionParser(destinationParser, jumpParser);
 
             // act
             IInstruction result = parser.ParseInstruction(line);
 
             // assert 
-            Assert.AreEqual(typeof(ComputeInstruction), result.GetType());
+            Assert.AreEqual(expectedType, result.GetType());
         }
 
-        [TestCase("JMP", ComputeJumpType.JMP)]
-        [TestCase("JGT", ComputeJumpType.JGT)]
-        [TestCase("JEQ", ComputeJumpType.JEQ)]
-        [TestCase("JGE", ComputeJumpType.JGE)]
-        [TestCase("JLT", ComputeJumpType.JLT)]
-        [TestCase("JNE", ComputeJumpType.JNE)]
-        [TestCase("JLE", ComputeJumpType.JLE)]
-        public void ParseInstruction_Returns_ComputeInstruction_With_Regular_Jump_When_Jump_Is_Specified(string jumpstring, ComputeJumpType expected)
+        [Test, Combinatorial]
+        public void ParseInstruction_Returns_ComputeInstruction_When_Instruction_Is_Valid(
+            [Values("", "M", "D", "MD", "A", "AM", "AD", "AMD")]string dest, 
+            [Values("", "JGT", "JEQ", "JGE", "JLT", "JNE", "JLE", "JMP")]string jump,
+            [Values("0", "1", "-1", "D", "A", "!D", "!A", "-D", "-A", "D+1", "A+1", "D-1", "A-1", "D+A", "D-A",
+                "A-D", "D&A", "D|A", "M", "!M", "-M", "M+1", "M-1", "D+M", "D-M", "M-D", "D&M", "D|M")]string comp)
         {
             // arrange
-            string line = "MD=1;" + jumpstring;
-            var parser = new ComputeInstructionParser();
+            string equals = "=", semicolon = ";";
+            if (string.IsNullOrEmpty(dest))
+                equals = string.Empty;
+            if (string.IsNullOrEmpty(jump))
+                semicolon = string.Empty;
+            string line = dest + equals + comp + semicolon + jump;
+
+            var destinationParser = Substitute.For<IComputeDestinationParser>();
+            var jumpParser = Substitute.For<IComputeJumpParser>();
+            var parser = new ComputeInstructionParser(destinationParser, jumpParser);
 
             // act
             IInstruction result = parser.ParseInstruction(line);
 
             // assert 
-            Assert.AreEqual(expected, ((ComputeInstruction)result).JumpType);
-        }
-
-        [Test]
-        public void ParseInstruction_Returns_UnkownInstruction_When_Jump_Cannot_Be_Parsed()
-        {
-            // arrange
-            const string line = "0;LOL";
-            var parser = new ComputeInstructionParser();
-
-            // act
-            IInstruction result = parser.ParseInstruction(line);
-
-            // assert 
-            Assert.AreEqual(typeof(UnknownInstruction), result.GetType());
-        }
-
-        [Test]
-        public void ParseInstruction_Returns_ComputeInstruction_With_No_Destination_When_Line_Does_Not_Contain_Equals()
-        {
-            // arrange
-            const string line = "0;JMP";
-            var parser = new ComputeInstructionParser();
-
-            // act
-            IInstruction result = parser.ParseInstruction(line);
-
-            // assert 
-            Assert.AreEqual(ComputeDestinationType.None, ((ComputeInstruction) result).DestinationType);
-        }
-
-
-        [Test]
-        public void ParseInstruction_Returns_UnkownInstruction_When_Destination_Contains_Invalid_Chars()
-        {
-            // arrange
-            const string line = "ABC=1;JMP";
-            var parser = new ComputeInstructionParser();
-
-            // act
-            IInstruction result = parser.ParseInstruction(line);
-
-            // assert
-            Assert.AreEqual(typeof(UnknownInstruction), result.GetType());
+            destinationParser.Received().ParseComputeDestination(Arg.Is(dest));
+            jumpParser.Received().ParseComputeJump(Arg.Is(jump));
         }
     }
 }

@@ -5,13 +5,13 @@ namespace Assembler.Instructions
     public struct ComputeInstruction : IInstruction, IEquatable<ComputeInstruction>
     {
         private readonly ComputeDestinationType _destinationType;
-        private readonly string _calculation;
+        private readonly string _computation;
         private readonly ComputeJumpType _jumpType;
 
-        public ComputeInstruction(ComputeDestinationType destinationType, string calculation, ComputeJumpType jumpType)
+        public ComputeInstruction(ComputeDestinationType destinationType, string computation, ComputeJumpType jumpType)
         {
             _destinationType = destinationType;
-            _calculation = calculation;
+            _computation = computation;
             _jumpType = jumpType;
         }
 
@@ -20,9 +20,9 @@ namespace Assembler.Instructions
             get { return _destinationType; }
         }
 
-        public string Calculation
+        public string Computation
         {
-            get { return _calculation; }
+            get { return _computation; }
         }
 
         public ComputeJumpType JumpType
@@ -40,7 +40,7 @@ namespace Assembler.Instructions
             if (other.DestinationType != DestinationType)
                 return false;
 
-            if (other.Calculation != Calculation)
+            if (other.Computation != Computation)
                 return false;
 
             if (other.JumpType != JumpType)

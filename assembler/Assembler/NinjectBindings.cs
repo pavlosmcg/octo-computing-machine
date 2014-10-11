@@ -19,6 +19,8 @@ namespace Assembler
             Bind<IInstructionParser>().To<AddressInstructionParser>();
             Bind<IInstructionParser>().To<ComputeInstructionParser>();
             Bind<IInstructionParser>().To<LabelInstructionParser>();
+            Bind<IComputeDestinationParser>().To<ComputeDestinationParser>();
+            Bind<IComputeJumpParser>().To<ComputeJumpParser>();
         }
     }
 }

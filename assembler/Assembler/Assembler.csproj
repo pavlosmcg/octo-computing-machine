@@ -58,7 +58,11 @@
     <Compile Include="Instructions\UnknownInstruction.cs" />
     <Compile Include="NinjectBindings.cs" />
     <Compile Include="Parsing\AddressInstructionParser.cs" />
+    <Compile Include="Parsing\ComputeDestinationParser.cs" />
+    <Compile Include="Parsing\ComputeJumpParser.cs" />
     <Compile Include="Parsing\ComputeInstructionParser.cs" />
+    <Compile Include="Parsing\IComputeDestinationParser.cs" />
+    <Compile Include="Parsing\IComputeJumpParser.cs" />
     <Compile Include="Parsing\LabelInstructionParser.cs" />
     <Compile Include="Parsing\IInstructionParser.cs" />
     <Compile Include="Parsing\ILineParser.cs" />

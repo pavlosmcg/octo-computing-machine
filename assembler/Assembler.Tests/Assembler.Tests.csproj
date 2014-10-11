@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parsing\AddressInstructionParserTests.cs" />
+    <Compile Include="Parsing\ComputeDestinationParserTests.cs" />
+    <Compile Include="Parsing\ComputeJumpParserTests.cs" />
     <Compile Include="Parsing\ComputeInstructionParserTests.cs" />
     <Compile Include="Parsing\LineParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
