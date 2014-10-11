@@ -1,4 +1,4 @@
-namespace Assembler.Binary
+namespace Assembler
 {
     public interface IAssembler
     {

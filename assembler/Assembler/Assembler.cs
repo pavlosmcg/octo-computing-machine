@@ -1,12 +1,12 @@
 using Assembler.Sanitising;
 
-namespace Assembler.Binary
+namespace Assembler
 {
-    public class HackAssembler : IAssembler
+    public class Assembler : IAssembler
     {
         private readonly ISanitiser _sanitiser;
 
-        public HackAssembler(ISanitiser sanitiser)
+        public Assembler(ISanitiser sanitiser)
         {
             _sanitiser = sanitiser;
         }

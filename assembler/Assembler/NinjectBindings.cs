@@ -1,5 +1,4 @@
-﻿using Assembler.Binary;
-using Assembler.Parsing;
+﻿using Assembler.Parsing;
 using Assembler.Sanitising;
 using Ninject.Modules;
 
@@ -9,7 +8,7 @@ namespace Assembler
     {
         public override void Load()
         {
-            Bind<IAssembler>().To<HackAssembler>();
+            Bind<IAssembler>().To<Assembler>();
             
             Bind<ISanitiser>().To<Sanitiser>();
             Bind<IWhitespaceRemover>().To<WhitespaceRemover>();
