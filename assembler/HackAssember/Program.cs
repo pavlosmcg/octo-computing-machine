@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Reflection;
+using Assembler;
 using Ninject;
 
-namespace Assembler
+namespace HackAssember
 {
     class Program
     {

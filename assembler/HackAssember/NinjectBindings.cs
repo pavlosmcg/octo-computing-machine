@@ -1,14 +1,15 @@
-﻿using Assembler.Parsing;
+﻿using Assembler;
+using Assembler.Parsing;
 using Assembler.Sanitising;
 using Ninject.Modules;
 
-namespace Assembler
+namespace HackAssember
 {
     public class NinjectBindings : NinjectModule
     {
         public override void Load()
         {
-            Bind<IAssembler>().To<Assembler>();
+            Bind<IAssembler>().To<Assembler.Assembler>();
             
             Bind<ISanitiser>().To<Sanitiser>();
             Bind<IWhitespaceRemover>().To<WhitespaceRemover>();
