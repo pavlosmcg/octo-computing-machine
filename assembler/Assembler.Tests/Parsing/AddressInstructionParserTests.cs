@@ -34,5 +34,19 @@ namespace Assembler.Tests.Parsing
             // assert 
             Assert.AreEqual(typeof (UnknownInstruction), result.GetType());
         }
+
+        [Test]
+        public void ParseInstruction_Returns_AddressInstruction_When_Address_Is_Valid()
+        {
+            // arrange
+            const string line = "@1234";
+            var parser = new AddressInstructionParser();
+
+            // act
+            IInstruction result = parser.ParseInstruction(line);
+
+            // assert 
+            Assert.AreEqual(1234, ((AddressInstruction)result).Address);
+        }
     }
 }

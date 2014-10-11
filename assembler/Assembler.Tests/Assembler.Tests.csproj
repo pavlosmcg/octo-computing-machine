@@ -51,6 +51,7 @@
     <Compile Include="Parsing\ComputeDestinationParserTests.cs" />
     <Compile Include="Parsing\ComputeJumpParserTests.cs" />
     <Compile Include="Parsing\ComputeInstructionParserTests.cs" />
+    <Compile Include="Parsing\VariableInstructionParserTests.cs" />
     <Compile Include="Parsing\LabelInstructionParserTests.cs" />
     <Compile Include="Parsing\LabelParserTests.cs" />
     <Compile Include="Parsing\LineParserTests.cs" />

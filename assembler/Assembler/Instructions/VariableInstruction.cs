@@ -2,11 +2,11 @@
 
 namespace Assembler.Instructions
 {
-    public struct LabelInstruction : IInstruction, IEquatable<LabelInstruction>
+    public struct VariableInstruction : IInstruction, IEquatable<VariableInstruction>
     {
         private readonly string _label;
 
-        public LabelInstruction(string label)
+        public VariableInstruction(string label)
         {
             _label = label;
         }
@@ -21,7 +21,7 @@ namespace Assembler.Instructions
             instructionVisitor.VisitInstruction(this);
         }
 
-        public bool Equals(LabelInstruction other)
+        public bool Equals(VariableInstruction other)
         {
             return string.Equals(other.Label, Label);
         }

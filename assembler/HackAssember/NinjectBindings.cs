@@ -16,9 +16,11 @@ namespace HackAssember
             Bind<ICommentRemover>().To<CommentRemover>();
             
             Bind<ILineParser>().To<LineParser>();
+            Bind<ILabelParser>().To<LabelParser>();
             Bind<IInstructionParser>().To<AddressInstructionParser>();
-            Bind<IInstructionParser>().To<ComputeInstructionParser>();
             Bind<IInstructionParser>().To<LabelInstructionParser>();
+            Bind<IInstructionParser>().To<VariableInstructionParser>();
+            Bind<IInstructionParser>().To<ComputeInstructionParser>();
             Bind<IComputeDestinationParser>().To<ComputeDestinationParser>();
             Bind<IComputeJumpParser>().To<ComputeJumpParser>();
         }

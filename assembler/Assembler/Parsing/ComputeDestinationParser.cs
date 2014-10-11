@@ -10,6 +10,7 @@ namespace Assembler.Parsing
             if (string.IsNullOrEmpty(destination))
                 return ComputeDestinationType.None;
 
+            //TODO Actually parse this!
             throw new ArgumentException("Cannot parse compute instruction destination", destination);
         }
     }
