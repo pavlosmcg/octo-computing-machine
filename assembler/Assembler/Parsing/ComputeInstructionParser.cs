@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Assembler.Instructions;
 
 namespace Assembler.Parsing
@@ -19,11 +20,17 @@ namespace Assembler.Parsing
 
             ComputeJumpType jumpType;
             if (!line.Contains(";"))
-                jumpType= ComputeJumpType.None;
+                jumpType = ComputeJumpType.None;
             else if (!Enum.TryParse(line.Split(';')[1], out jumpType))
                 return new UnknownInstruction(line);
 
-            return new ComputeInstruction(ComputeDestinationType.None, null, jumpType);
+            var destinationType = ComputeDestinationType.None;
+            if (!line.Contains("="))
+                destinationType = ComputeDestinationType.None;
+            else if (line.Split('=')[0].Count(c => !(c == 'A' || c == 'M' || c == 'D')) > 0)
+                return new UnknownInstruction(line);
+
+            return new ComputeInstruction(destinationType, null, jumpType);
         }
     }
 }
