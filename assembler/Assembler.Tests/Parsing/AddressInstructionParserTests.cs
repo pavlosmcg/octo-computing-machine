@@ -32,7 +32,7 @@ namespace Assembler.Tests.Parsing
             IInstruction result = parser.ParseInstruction(line);
 
             // assert 
-            Assert.AreEqual(typeof(UnknownInstruction), result.GetType());
+            Assert.AreEqual(typeof (UnknownInstruction), result.GetType());
         }
     }
 }

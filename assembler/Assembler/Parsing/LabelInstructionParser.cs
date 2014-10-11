@@ -1,4 +1,5 @@
-﻿using Assembler.Instructions;
+﻿using System.Text.RegularExpressions;
+using Assembler.Instructions;
 
 namespace Assembler.Parsing
 {
@@ -6,11 +7,13 @@ namespace Assembler.Parsing
     {
         public IInstruction ParseInstruction(string line)
         {
-            if (!line.StartsWith("("))
+            const string pattern = @"^\((\D[\w\.\$:]+)\)$";
+            Match match = new Regex(pattern).Match(line);
+
+            if (!match.Success)
                 return new UnknownInstruction(line);
 
-            // TODO Complete implementation
-            return new LabelInstruction();
+            return new LabelInstruction(match.Groups[1].Value);
         }
     }
 }
