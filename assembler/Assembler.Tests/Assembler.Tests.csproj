@@ -52,6 +52,7 @@
     <Compile Include="Parsing\ComputeJumpParserTests.cs" />
     <Compile Include="Parsing\ComputeInstructionParserTests.cs" />
     <Compile Include="Parsing\LabelInstructionParserTests.cs" />
+    <Compile Include="Parsing\LabelParserTests.cs" />
     <Compile Include="Parsing\LineParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sanitising\CommentRemoverTests.cs" />

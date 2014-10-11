@@ -96,6 +96,7 @@ namespace Assembler.Tests.Parsing
             // assert 
             destinationParser.Received().ParseComputeDestination(Arg.Is(dest));
             jumpParser.Received().ParseComputeJump(Arg.Is(jump));
+            Assert.AreEqual(typeof(ComputeInstruction), result.GetType());
         }
     }
 }

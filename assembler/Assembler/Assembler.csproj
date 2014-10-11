@@ -77,9 +77,11 @@
     <Compile Include="Parsing\ComputeInstructionParser.cs" />
     <Compile Include="Parsing\IComputeDestinationParser.cs" />
     <Compile Include="Parsing\IComputeJumpParser.cs" />
+    <Compile Include="Parsing\ILabelParser.cs" />
     <Compile Include="Parsing\LabelInstructionParser.cs" />
     <Compile Include="Parsing\IInstructionParser.cs" />
     <Compile Include="Parsing\ILineParser.cs" />
+    <Compile Include="Parsing\LabelParser.cs" />
     <Compile Include="Parsing\LineParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sanitising\CommentRemover.cs" />
