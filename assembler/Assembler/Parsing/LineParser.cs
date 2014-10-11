@@ -17,6 +17,7 @@ namespace Assembler.Parsing
 
             foreach (IInstructionParser instructionParser in _instructionParsers)
             {
+                // TODO - come up with some neater pattern than this type checking
                 result = instructionParser.ParseInstruction(line);
                 if (result.GetType() != typeof (UnknownInstruction))
                     break;

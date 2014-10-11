@@ -9,6 +9,7 @@ namespace Assembler.Parsing
             if (!line.StartsWith("("))
                 return new UnknownInstruction(line);
 
+            // TODO Complete implementation
             return new LabelInstruction();
         }
     }
