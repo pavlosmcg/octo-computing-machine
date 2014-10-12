@@ -9,18 +9,19 @@ namespace Assembler.Tests.Parsing
     public class VariableInstructionParserTests
     {
         [Test]
-        public void ParseInstruction_Returns_UnkownInstruction_When_Line_Does_Not_Start_With_At_Symbol()
+        public void ParseInstruction_Returns_Delegates_To_Next_Parser_When_Line_Does_Not_Start_With_At_Symbol()
         {
             // arrange
             const string line = "somevar";
+            var nextParser = Substitute.For<IInstructionParser>();
             var labelParser = Substitute.For<ILabelParser>();
-            var parser = new VariableInstructionParser(labelParser);
+            var parser = new VariableInstructionParser(nextParser, labelParser);
 
             // act
-            IInstruction result = parser.ParseInstruction(line);
+            parser.ParseInstruction(line);
 
             // assert 
-            Assert.AreEqual(typeof (UnknownInstruction), result.GetType());
+            nextParser.Received().ParseInstruction(Arg.Is(line));
         }
 
         [Test]
@@ -28,13 +29,15 @@ namespace Assembler.Tests.Parsing
         {
             // arrange
             const string line = "@somevar";
+            var nextParser = Substitute.For<IInstructionParser>();
             var labelParser = Substitute.For<ILabelParser>();
-            var parser = new VariableInstructionParser(labelParser);
+            var parser = new VariableInstructionParser(nextParser, labelParser);
 
             // act
             IInstruction result = parser.ParseInstruction(line);
 
             // assert 
+            nextParser.DidNotReceive().ParseInstruction(Arg.Any<string>());
             labelParser.Received().ParseLabel(Arg.Is("somevar"));
             Assert.AreEqual(typeof(VariableInstruction), result.GetType());
         }

@@ -6,11 +6,13 @@ namespace Assembler.Parsing
 {
     public class ComputeInstructionParser : IInstructionParser
     {
+        private readonly IInstructionParser _nextParser;
         private readonly IComputeDestinationParser _destinationParser;
         private readonly IComputeJumpParser _jumpParser;
 
-        public ComputeInstructionParser(IComputeDestinationParser destinationParser, IComputeJumpParser jumpParser)
+        public ComputeInstructionParser(IInstructionParser nextParser, IComputeDestinationParser destinationParser, IComputeJumpParser jumpParser)
         {
+            _nextParser = nextParser;
             _destinationParser = destinationParser;
             _jumpParser = jumpParser;
         }
@@ -23,7 +25,7 @@ namespace Assembler.Parsing
             Match match = new Regex(pattern, RegexOptions.IgnoreCase).Match(line);
 
             if (!match.Success)
-                return new UnknownInstruction(line);
+                _nextParser.ParseInstruction(line);
 
             string dest = match.Groups["dest"].Value;
             string comp = match.Groups["comp"].Value;
@@ -39,7 +41,7 @@ namespace Assembler.Parsing
             }
             catch (ArgumentException)
             {
-                return new UnknownInstruction(line);
+                return _nextParser.ParseInstruction(line);
             }
             
             return new ComputeInstruction(destinationType, comp, jumpType);

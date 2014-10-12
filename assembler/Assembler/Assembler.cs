@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Linq;
-using Assembler.Instructions;
 using Assembler.Parsing;
 using Assembler.Sanitising;
 
@@ -9,12 +7,12 @@ namespace Assembler
     public class Assembler : IAssembler
     {
         private readonly ISanitiser _sanitiser;
-        private readonly ILineParser _lineParser;
+        private readonly IInstructionParser _instructionParser;
 
-        public Assembler(ISanitiser sanitiser, ILineParser lineParser)
+        public Assembler(ISanitiser sanitiser, IInstructionParser instructionParser)
         {
             _sanitiser = sanitiser;
-            _lineParser = lineParser;
+            _instructionParser = instructionParser;
         }
 
         public string[] Assemble(string[] lines)
@@ -23,7 +21,7 @@ namespace Assembler
             var cleanLines = _sanitiser.Sanitise(lines);
 
             // parse each line into its instruction type
-            var instructions = cleanLines.Select(line => _lineParser.ParseLine(line)).ToList();
+            var instructions = cleanLines.Select(line => _instructionParser.ParseInstruction(line)).ToList();
 
             return cleanLines;
         }

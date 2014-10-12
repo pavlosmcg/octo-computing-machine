@@ -14,13 +14,16 @@ namespace HackAssember
             Bind<ISanitiser>().To<Sanitiser>();
             Bind<IWhitespaceRemover>().To<WhitespaceRemover>();
             Bind<ICommentRemover>().To<CommentRemover>();
-            
-            Bind<ILineParser>().To<LineParser>();
+
+            // chain-of-responsibility of parsers [To<next>().WhenInjectedInto<previous>()]
+            Bind<IInstructionParser>().To<ComputeInstructionParser>().WhenInjectedInto<Assembler.Assembler>();
+            Bind<IInstructionParser>().To<VariableInstructionParser>().WhenInjectedInto<ComputeInstructionParser>();
+            Bind<IInstructionParser>().To<AddressInstructionParser>().WhenInjectedInto<VariableInstructionParser>();
+            Bind<IInstructionParser>().To<LabelInstructionParser>().WhenInjectedInto<AddressInstructionParser>();
+            Bind<IInstructionParser>().To<UnknownInstructionParser>().WhenInjectedInto<LabelInstructionParser>();
+
+            // helping classes for parsers
             Bind<ILabelParser>().To<LabelParser>();
-            Bind<IInstructionParser>().To<AddressInstructionParser>();
-            Bind<IInstructionParser>().To<LabelInstructionParser>();
-            Bind<IInstructionParser>().To<VariableInstructionParser>();
-            Bind<IInstructionParser>().To<ComputeInstructionParser>();
             Bind<IComputeDestinationParser>().To<ComputeDestinationParser>();
             Bind<IComputeJumpParser>().To<ComputeJumpParser>();
         }

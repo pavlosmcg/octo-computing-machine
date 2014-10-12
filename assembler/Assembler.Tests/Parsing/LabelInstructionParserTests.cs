@@ -9,18 +9,19 @@ namespace Assembler.Tests.Parsing
     public class LabelInstructionParserTests
     {
         [Test]
-        public void ParseInstruction_Returns_UnkownInstruction_When_Line_Does_Not_Start_With_Opening_Bracket()
+        public void ParseInstruction_Returns_Delegates_To_Next_Parser_When_Line_Does_Not_Start_With_Opening_Bracket()
         {
             // arrange
             const string line = "BLORG)";
+            var nextParser = Substitute.For<IInstructionParser>();
             var labelParser = Substitute.For<ILabelParser>();
-            var parser = new LabelInstructionParser(labelParser);
+            var parser = new LabelInstructionParser(nextParser, labelParser);
 
             // act
-            IInstruction result = parser.ParseInstruction(line);
+            parser.ParseInstruction(line);
 
             // assert 
-            Assert.AreEqual(typeof (UnknownInstruction), result.GetType());
+            nextParser.Received().ParseInstruction(Arg.Is(line));
         }
 
         [TestCase("(BLORG)", "BLORG")]
@@ -31,13 +32,15 @@ namespace Assembler.Tests.Parsing
         public void ParseInstruction_Returns_LabelInstruction_When_Label_Is_Valid(string line, string expected)
         {
             // arrange
+            var nextParser = Substitute.For<IInstructionParser>();
             var labelParser = Substitute.For<ILabelParser>();
-            var parser = new LabelInstructionParser(labelParser);
+            var parser = new LabelInstructionParser(nextParser, labelParser);
 
             // act
             IInstruction result = parser.ParseInstruction(line);
 
             // assert 
+            nextParser.DidNotReceive().ParseInstruction(Arg.Any<string>());
             labelParser.Received().ParseLabel(Arg.Is(expected));
             Assert.AreEqual(typeof(LabelInstruction), result.GetType());
         }

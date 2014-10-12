@@ -5,10 +5,12 @@ namespace Assembler.Parsing
 {
     public class LabelInstructionParser : IInstructionParser
     {
+        private readonly IInstructionParser _nextParser;
         private readonly ILabelParser _labelParser;
 
-        public LabelInstructionParser(ILabelParser labelParser)
+        public LabelInstructionParser(IInstructionParser nextParser, ILabelParser labelParser)
         {
+            _nextParser = nextParser;
             _labelParser = labelParser;
         }
 
@@ -18,11 +20,11 @@ namespace Assembler.Parsing
             Match match = new Regex(pattern, RegexOptions.IgnoreCase).Match(line);
 
             if (!match.Success)
-                return new UnknownInstruction(line);
+                return _nextParser.ParseInstruction(line);
 
             var parsedLabel = _labelParser.ParseLabel(match.Groups[1].Value);
             if (parsedLabel == null)
-                return new UnknownInstruction(line);
+                return _nextParser.ParseInstruction(line);
 
             return new LabelInstruction(parsedLabel);
         }

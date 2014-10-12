@@ -10,65 +10,68 @@ namespace Assembler.Tests.Parsing
     public class ComputeInstructionParserTests
     {
         [Test]
-        public void ParseInstruction_Returns_UnkownInstruction_When_Line_Contains_More_Than_One_Equals()
+        public void ParseInstruction_Returns_Delegates_To_Next_Parser_When_Line_Contains_More_Than_One_Equals()
         {
             // arrange
             const string line = "MD=1=1";
+            var nextParser = Substitute.For<IInstructionParser>();
             var destinationParser = Substitute.For<IComputeDestinationParser>();
             var jumpParser = Substitute.For<IComputeJumpParser>();
-            var parser = new ComputeInstructionParser(destinationParser, jumpParser);
+            var parser = new ComputeInstructionParser(nextParser, destinationParser, jumpParser);
 
             // act
-            IInstruction result = parser.ParseInstruction(line);
+            parser.ParseInstruction(line);
 
             // assert 
-            Assert.AreEqual(typeof(UnknownInstruction), result.GetType());
+            nextParser.Received().ParseInstruction(Arg.Is(line));
         }
 
         [Test]
-        public void ParseInstruction_Returns_UnkownInstruction_When_Line_Contains_More_Than_One_Semicolon()
+        public void ParseInstruction_Returns_Delegates_To_Next_Parser_When_Line_Contains_More_Than_One_Semicolon()
         {
             // arrange
             const string line = "M+1;JMP;JGT";
+            var nextParser = Substitute.For<IInstructionParser>();
             var destinationParser = Substitute.For<IComputeDestinationParser>();
             var jumpParser = Substitute.For<IComputeJumpParser>();
-            var parser = new ComputeInstructionParser(destinationParser, jumpParser);
+            var parser = new ComputeInstructionParser(nextParser, destinationParser, jumpParser);
 
             // act
-            IInstruction result = parser.ParseInstruction(line);
+            parser.ParseInstruction(line);
 
             // assert 
-            Assert.AreEqual(typeof(UnknownInstruction), result.GetType());
+            nextParser.Received().ParseInstruction(Arg.Is(line));
         }
 
-        [TestCase("M+1", typeof(ComputeInstruction))]
-        [TestCase("M=1", typeof(ComputeInstruction))]
-        [TestCase("D=M+1;JGT", typeof(ComputeInstruction))]
-        [TestCase("0;JMP", typeof(ComputeInstruction))]
-        [TestCase("", typeof(UnknownInstruction))]
-        [TestCase("M=M+1=", typeof(UnknownInstruction))]
-        [TestCase("=M", typeof(UnknownInstruction))]
-        [TestCase("M=", typeof(UnknownInstruction))]
-        [TestCase(";JMP", typeof(UnknownInstruction))]
-        [TestCase(":JMP", typeof(UnknownInstruction))]
-        [TestCase("MDA=M-1;", typeof(UnknownInstruction))]
-        [TestCase("MD==1;JMP", typeof(UnknownInstruction))]
-        [TestCase("MD==1", typeof(UnknownInstruction))]
-        [TestCase("AMD=HH;;JGT", typeof(UnknownInstruction))]
-        [TestCase("AMD=X+1;JNE", typeof(UnknownInstruction))]
-        [TestCase("ZK=M+1;JEQ", typeof(UnknownInstruction))]
-        public void ParseInstruction_Returns_UnknownInstruction_When_Instruction_Is_Invalid(string line, Type expectedType)
+        [TestCase("M+1", 0)]
+        [TestCase("M=1", 0)]
+        [TestCase("D=M+1;JGT", 0)]
+        [TestCase("0;JMP", 0)]
+        [TestCase("", 1)]
+        [TestCase("M=M+1=", 1)]
+        [TestCase("=M", 1)]
+        [TestCase("M=", 1)]
+        [TestCase(";JMP", 1)]
+        [TestCase(":JMP", 1)]
+        [TestCase("MDA=M-1;", 1)]
+        [TestCase("MD==1;JMP", 1)]
+        [TestCase("MD==1", 1)]
+        [TestCase("AMD=HH;;JGT", 1)]
+        [TestCase("AMD=X+1;JNE", 1)]
+        [TestCase("ZK=M+1;JEQ", 1)]
+        public void ParseInstruction_Returns_Delegates_To_Next_Parser_When_Instruction_Is_Invalid(string line, int timesDelegated)
         {
             // arrange
+            var nextParser = Substitute.For<IInstructionParser>();
             var destinationParser = Substitute.For<IComputeDestinationParser>();
             var jumpParser = Substitute.For<IComputeJumpParser>();
-            var parser = new ComputeInstructionParser(destinationParser, jumpParser);
+            var parser = new ComputeInstructionParser(nextParser, destinationParser, jumpParser);
 
             // act
-            IInstruction result = parser.ParseInstruction(line);
+            parser.ParseInstruction(line);
 
             // assert 
-            Assert.AreEqual(expectedType, result.GetType());
+            nextParser.Received(timesDelegated).ParseInstruction(Arg.Any<string>());
         }
 
         [Test, Combinatorial]
@@ -86,14 +89,16 @@ namespace Assembler.Tests.Parsing
                 semicolon = string.Empty;
             string line = dest + equals + comp + semicolon + jump;
 
+            var nextParser = Substitute.For<IInstructionParser>();
             var destinationParser = Substitute.For<IComputeDestinationParser>();
             var jumpParser = Substitute.For<IComputeJumpParser>();
-            var parser = new ComputeInstructionParser(destinationParser, jumpParser);
+            var parser = new ComputeInstructionParser(nextParser, destinationParser, jumpParser);
 
             // act
             IInstruction result = parser.ParseInstruction(line);
 
             // assert 
+            nextParser.DidNotReceive().ParseInstruction(Arg.Any<string>());
             destinationParser.Received().ParseComputeDestination(Arg.Is(dest));
             jumpParser.Received().ParseComputeJump(Arg.Is(jump));
             Assert.AreEqual(typeof(ComputeInstruction), result.GetType());
