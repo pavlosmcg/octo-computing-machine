@@ -1,6 +1,6 @@
 ﻿namespace Assembler.Parsing
 {
-    public interface ILabelParser
+    public interface ISymbolParser
     {
         string ParseLabel(string label);
     }

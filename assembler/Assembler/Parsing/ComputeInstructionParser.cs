@@ -25,7 +25,7 @@ namespace Assembler.Parsing
             Match match = new Regex(pattern, RegexOptions.IgnoreCase).Match(line);
 
             if (!match.Success)
-                _nextParser.ParseInstruction(line);
+                return _nextParser.ParseInstruction(line);
 
             string dest = match.Groups["dest"].Value;
             string comp = match.Groups["comp"].Value;

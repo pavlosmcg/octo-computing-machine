@@ -1,4 +1,5 @@
 using System.Linq;
+using Assembler.Binary;
 using Assembler.Parsing;
 using Assembler.Sanitising;
 
@@ -8,11 +9,13 @@ namespace Assembler
     {
         private readonly ISanitiser _sanitiser;
         private readonly IInstructionParser _instructionParser;
+        private readonly IBinaryAssembler _binaryAssembler;
 
-        public Assembler(ISanitiser sanitiser, IInstructionParser instructionParser)
+        public Assembler(ISanitiser sanitiser, IInstructionParser instructionParser, IBinaryAssembler binaryAssembler)
         {
             _sanitiser = sanitiser;
             _instructionParser = instructionParser;
+            _binaryAssembler = binaryAssembler;
         }
 
         public string[] Assemble(string[] lines)
@@ -21,9 +24,12 @@ namespace Assembler
             var cleanLines = _sanitiser.Sanitise(lines);
 
             // parse each line into its instruction type
-            var instructions = cleanLines.Select(line => _instructionParser.ParseInstruction(line)).ToList();
+            var instructions = cleanLines.Select(l => _instructionParser.ParseInstruction(l)).ToArray();
 
-            return cleanLines;
+            // assemble each instruction into binary line(s)
+            var assembledLines = instructions.SelectMany(i => _binaryAssembler.AssembleInstruction(i)).ToArray();
+
+            return assembledLines.ToArray();
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Assembler.Parsing
 {
-    public class LabelParser : ILabelParser
+    public class SymbolParser : ISymbolParser
     {
         public string ParseLabel(string label)
         {

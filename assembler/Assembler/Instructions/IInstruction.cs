@@ -2,6 +2,6 @@
 {
     public interface IInstruction
     {
-        void Accept<T>(IInstructionVisitor<T> instructionVisitor);
+        T Accept<T>(IInstructionVisitor<T> instructionVisitor);
     }
 }

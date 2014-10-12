@@ -3,7 +3,7 @@
 namespace Assembler.Instructions
 {
     [Flags]
-    public enum ComputeDestinationType
+    public enum ComputeDestinationType : byte
     {
         None = 0x0,
         Memory = 0x1,

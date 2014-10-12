@@ -14,7 +14,7 @@ namespace Assembler.Tests.Parsing
             // arrange
             const string line = "BLORG)";
             var nextParser = Substitute.For<IInstructionParser>();
-            var labelParser = Substitute.For<ILabelParser>();
+            var labelParser = Substitute.For<ISymbolParser>();
             var parser = new LabelInstructionParser(nextParser, labelParser);
 
             // act
@@ -33,7 +33,7 @@ namespace Assembler.Tests.Parsing
         {
             // arrange
             var nextParser = Substitute.For<IInstructionParser>();
-            var labelParser = Substitute.For<ILabelParser>();
+            var labelParser = Substitute.For<ISymbolParser>();
             var parser = new LabelInstructionParser(nextParser, labelParser);
 
             // act

@@ -1,4 +1,7 @@
 ﻿using Assembler;
+using Assembler.Binary;
+using Assembler.Binary.Hack;
+using Assembler.Instructions;
 using Assembler.Parsing;
 using Assembler.Sanitising;
 using Ninject.Modules;
@@ -11,6 +14,7 @@ namespace HackAssember
         {
             Bind<IAssembler>().To<Assembler.Assembler>();
             
+            // input sanitising
             Bind<ISanitiser>().To<Sanitiser>();
             Bind<IWhitespaceRemover>().To<WhitespaceRemover>();
             Bind<ICommentRemover>().To<CommentRemover>();
@@ -23,9 +27,18 @@ namespace HackAssember
             Bind<IInstructionParser>().To<UnknownInstructionParser>().WhenInjectedInto<LabelInstructionParser>();
 
             // helping classes for parsers
-            Bind<ILabelParser>().To<LabelParser>();
+            Bind<ISymbolParser>().To<SymbolParser>();
             Bind<IComputeDestinationParser>().To<ComputeDestinationParser>();
             Bind<IComputeJumpParser>().To<ComputeJumpParser>();
+
+            // binary assembly
+            Bind<IBinaryAssembler>().To<BinaryAssembler>();
+            Bind<IInstructionVisitor<string[]>>().To<AssemblyInstructionVisitor>();
+
+            // hack specific bindings
+            Bind<IHackComputeBitsAssembler>().To<HackComputeBitsAssembler>();
+            Bind<IInstructionAssembler<ComputeInstruction>>().To<HackComputeInstructionAssembler>();
+            Bind<IInstructionAssembler<AddressInstruction>>().To<HackAddressInstructionAssembler>();
         }
     }
 }

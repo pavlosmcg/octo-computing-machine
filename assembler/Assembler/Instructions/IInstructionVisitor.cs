@@ -2,6 +2,10 @@
 {
     public interface IInstructionVisitor<T>
     {
-        T VisitInstruction(IInstruction instruction);
+        T VisitInstruction(UnknownInstruction instruction);
+        T VisitInstruction(AddressInstruction instruction);
+        T VisitInstruction(ComputeInstruction instruction);
+        T VisitInstruction(LabelInstruction instruction);
+        T VisitInstruction(VariableInstruction instruction);
     }
 }

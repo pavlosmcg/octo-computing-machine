@@ -14,7 +14,7 @@ namespace Assembler.Tests.Parsing
             // arrange
             const string line = "somevar";
             var nextParser = Substitute.For<IInstructionParser>();
-            var labelParser = Substitute.For<ILabelParser>();
+            var labelParser = Substitute.For<ISymbolParser>();
             var parser = new VariableInstructionParser(nextParser, labelParser);
 
             // act
@@ -30,7 +30,7 @@ namespace Assembler.Tests.Parsing
             // arrange
             const string line = "@somevar";
             var nextParser = Substitute.For<IInstructionParser>();
-            var labelParser = Substitute.For<ILabelParser>();
+            var labelParser = Substitute.For<ISymbolParser>();
             var parser = new VariableInstructionParser(nextParser, labelParser);
 
             // act

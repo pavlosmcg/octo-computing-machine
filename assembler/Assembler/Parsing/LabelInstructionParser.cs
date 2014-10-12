@@ -6,9 +6,9 @@ namespace Assembler.Parsing
     public class LabelInstructionParser : IInstructionParser
     {
         private readonly IInstructionParser _nextParser;
-        private readonly ILabelParser _labelParser;
+        private readonly ISymbolParser _labelParser;
 
-        public LabelInstructionParser(IInstructionParser nextParser, ILabelParser labelParser)
+        public LabelInstructionParser(IInstructionParser nextParser, ISymbolParser labelParser)
         {
             _nextParser = nextParser;
             _labelParser = labelParser;

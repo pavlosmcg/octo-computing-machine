@@ -16,9 +16,9 @@ namespace Assembler.Instructions
             get { return _address; }
         }
 
-        public void Accept<T>(IInstructionVisitor<T> instructionVisitor)
+        public T Accept<T>(IInstructionVisitor<T> instructionVisitor)
         {
-            instructionVisitor.VisitInstruction(this);
+            return instructionVisitor.VisitInstruction(this);
         }
 
         public bool Equals(AddressInstruction other)

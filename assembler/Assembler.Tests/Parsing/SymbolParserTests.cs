@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace Assembler.Tests.Parsing
 {
     [TestFixture]
-    public class LabelParserTests
+    public class SymbolParserTests
     {
         [TestCase("BLORG", "BLORG")]
         [TestCase("blorg", "blorg")]
@@ -32,7 +32,7 @@ namespace Assembler.Tests.Parsing
         public void ParseInstruction_Returns_LabelInstruction_When_Label_Is_Valid(string input, string expected)
         {
             // arrange
-            var parser = new LabelParser();
+            var parser = new SymbolParser();
 
             // act
             string result = parser.ParseLabel(input);
