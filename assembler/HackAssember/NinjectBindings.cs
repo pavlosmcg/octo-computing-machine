@@ -4,6 +4,7 @@ using Assembler.Binary.Hack;
 using Assembler.Instructions;
 using Assembler.Parsing;
 using Assembler.Sanitising;
+using Assembler.SymbolResolution;
 using Ninject.Modules;
 
 namespace HackAssember
@@ -30,6 +31,9 @@ namespace HackAssember
             Bind<ISymbolParser>().To<SymbolParser>();
             Bind<IComputeDestinationParser>().To<ComputeDestinationParser>();
             Bind<IComputeJumpParser>().To<ComputeJumpParser>();
+
+            // symbol resolution
+            Bind<ISymbolResolver>().To<SymbolResolver>();
 
             // binary assembly
             Bind<IBinaryAssembler>().To<BinaryAssembler>();

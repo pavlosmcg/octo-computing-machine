@@ -99,6 +99,8 @@
     <Compile Include="Sanitising\IWhitespaceRemover.cs" />
     <Compile Include="Sanitising\Sanitiser.cs" />
     <Compile Include="Sanitising\WhitespaceRemover.cs" />
+    <Compile Include="SymbolResolution\ISymbolResolver.cs" />
+    <Compile Include="SymbolResolution\SymbolResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -117,7 +119,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SymbolResolution\Hack\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
