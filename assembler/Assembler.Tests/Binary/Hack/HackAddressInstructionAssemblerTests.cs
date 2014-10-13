@@ -1,4 +1,5 @@
-﻿using Assembler.Binary;
+﻿using System;
+using Assembler.Binary;
 using Assembler.Binary.Hack;
 using Assembler.Instructions;
 using NUnit.Framework;
@@ -50,6 +51,20 @@ namespace Assembler.Tests.Binary.Hack
 
             // assert 
             Assert.AreEqual('0', line[0]);
+        }
+
+        [Test]
+        public void AssembleInstruction_Throws_ArgumentOutOfRangeException_When_Address_Is_Greater_Than_15_bits()
+        {
+            // arrange
+            var instruction = new AddressInstruction(65536);
+            var assembler = new HackAddressInstructionAssembler();
+
+            // act
+            TestDelegate testDelegate = () => assembler.AssembleInstruction(instruction);
+
+            // assert 
+            Assert.Throws<ArgumentOutOfRangeException>(testDelegate);
         }
 
         [TestCase(0, "0000 0000 0000 0000")]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Assembler.Instructions;
 
 namespace Assembler.Binary.Hack
@@ -14,15 +15,16 @@ namespace Assembler.Binary.Hack
 
         public string[] AssembleInstruction(ComputeInstruction instruction)
         {
-            // TODO string builder!
+            // Hack instructions are only ever 16-bits long
+            var builder = new StringBuilder(16, 16);
 
             // set compute instruction marker bits
-            string output = "111";
-
+            builder.Append("111");
+            
             // set computation bits for ALU
             try
             {
-                output += _computeBitsAssembler.AssembleComputeBits(instruction.Computation);
+                builder.Append(_computeBitsAssembler.AssembleComputeBits(instruction.Computation));
             }
             catch (Exception)
             {
@@ -30,14 +32,12 @@ namespace Assembler.Binary.Hack
             }
             
             // set dest bits
-            string destBits = Convert.ToString((byte)instruction.DestinationType, 2).PadLeft(3, '0');
-            output += destBits;
+            builder.Append(Convert.ToString((byte)instruction.DestinationType, 2).PadLeft(3, '0'));
 
             // set jump bits
-            string jumpBits = Convert.ToString((byte) instruction.JumpType, 2).PadLeft(3, '0');
-            output += jumpBits;
+            builder.Append(Convert.ToString((byte)instruction.JumpType, 2).PadLeft(3, '0'));
 
-            return new[] { output };
+            return new[] { builder.ToString() };
         }
     }
 }

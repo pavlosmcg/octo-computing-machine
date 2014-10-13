@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Assembler.Instructions;
 
 namespace Assembler.Binary.Hack
@@ -7,11 +8,16 @@ namespace Assembler.Binary.Hack
     {
         public string[] AssembleInstruction(AddressInstruction instruction)
         {
-            string output = Convert.ToString(instruction.Address, 2).PadLeft(16, '0');
-            
-            //TODO ensure this always starts with zero
+            // Hack instructions are only ever 16-bits long
+            var builder = new StringBuilder(16, 16);
 
-            return new[] { output };
+            // set address instruction marker bit
+            builder.Append("0");
+
+            // set 15 address location bits
+            builder.Append(Convert.ToString(instruction.Address, 2).PadLeft(15, '0'));
+
+            return new[] { builder.ToString() };
         }
     }
 }
