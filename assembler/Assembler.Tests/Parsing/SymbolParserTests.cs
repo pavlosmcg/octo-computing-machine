@@ -6,6 +6,8 @@ namespace Assembler.Tests.Parsing
     [TestFixture]
     public class SymbolParserTests
     {
+        [TestCase("i", "i")]
+        [TestCase("ii", "ii")]
         [TestCase("BLORG", "BLORG")]
         [TestCase("blorg", "blorg")]
         [TestCase("END_PLOTZ", "END_PLOTZ")]

@@ -6,7 +6,7 @@ namespace Assembler.Parsing
     {
         public string ParseLabel(string label)
         {
-            const string pattern = @"^([A-Za-z_\.\$:][\w\.\$:]+)$";
+            const string pattern = @"^([A-Za-z_\.\$:][\w\.\$:]*)$";
             Match match = new Regex(pattern).Match(label);
 
             if (!match.Success)
