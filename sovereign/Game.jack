@@ -1,31 +1,45 @@
-/**
- * Implements the Square Dance game.
- * In this game you can move a black square around the screen and
- * change its size during the movement.
- * In the beginning, the square is located at the top-left corner
- * of the screen. The arrow keys are used to move the square.
- * The 'z' & 'x' keys are used to decrement and increment the size.
- * The 'q' key is used to quit the game.
- */
 class Game {
 
-    // The square
-    field Square square;
-
-    // The square's movement direction
-    field int direction; // 0=none,1=up,2=down,3=left,4=right
+    // Game tile squares
+    field Array squares;
 
     /** Constructs a new Game. */
     constructor Game new() {
-        let square = Square.new(0, 0, 30);
-        let direction = 0;
-
+        var Square curSquare;
+        var int i;
+        
+        // set up map:
+        let squares = Array.new(9);    
+        let i = 0;
+        while (i < 9) {
+            let squares[i] = Square.new();
+            let i = i + 1;
+        }
+        let curSquare = squares[0];
+        do curSquare.setNorth(squares[1]);
+        let curSquare = squares[1];
+        do curSquare.setNorth(squares[2]);
+        let curSquare = squares[2];
+        do curSquare.setNorth(squares[3]);
+        let curSquare = squares[3];
+        do curSquare.setEast(squares[4]);
+        let curSquare = squares[4];
+        do curSquare.setEast(squares[5]);
+        let curSquare = squares[5];
+        do curSquare.setSouth(squares[6]);
+        let curSquare = squares[6];
+        do curSquare.setSouth(squares[7]);
+        let curSquare = squares[7];
+        do curSquare.setWest(squares[8]);
+        let curSquare = squares[8];
+        do curSquare.setWest(squares[1]);
+        
         return this;
     }
 
     /** Deallocates the object's memory. */
     method void dispose() {
-        do square.dispose();
+        do squares.dispose();
         do Memory.deAlloc(this);
         return;
     }
@@ -42,57 +56,16 @@ class Game {
             // waits for a key to be pressed.
             while (key = 0) {
                 let key = Keyboard.keyPressed();
-                do moveSquare();
             }
 
-            if (key = 81) {
-                let exit = true;
-            }
-            if (key = 90) {
-                do square.decSize();
-            }
-            if (key = 88) {
-                do square.incSize();
-            }
-            if (key = 131) {
-                let direction = 1;
-            }
-            if (key = 133) {
-                let direction = 2;
-            }
-            if (key = 130) {
-                let direction = 3;
-            }
-            if (key = 132) {
-                let direction = 4;
-            }
+            let exit = true;
 
             // waits for the key to be released.
             while (~(key = 0)) {
                 let key = Keyboard.keyPressed();
-                do moveSquare();
             }
         }
             
         return;
 	}
-
-    /** Moves the square by 2 pixels in the current direction. */
-    method void moveSquare() {
-        if (direction = 1) {
-            do square.moveUp();
-        }
-        if (direction = 2) {
-            do square.moveDown();
-        }
-        if (direction = 3) {
-            do square.moveLeft();
-        }
-        if (direction = 4) {
-            do square.moveRight();
-        }
-
-        do Sys.wait(5); // Delays the next movement.
-        return;
-    }
 }
