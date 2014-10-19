@@ -1,0 +1,32 @@
+class Castle {
+
+    field Treasure treasure;
+    field String name;
+    
+    constructor Castle new(string aName, Treasure aTreasure) {
+        let name = aName;
+        let treasure = aTreasure;
+        return this;
+    }
+
+    /** Deallocates the object's memory. */
+    method void dispose() {
+        do treasure.dispose();
+        do name.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+    
+    method String getName() {
+        return name;
+    }
+    
+    method Treasure getTreasure() {
+        return treasure;
+    }
+    
+    method void setTreasure(Treasure aTreasure) {
+        let treasure = aTreasure;
+        return;
+    }
+}

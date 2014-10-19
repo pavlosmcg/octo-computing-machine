@@ -1,0 +1,20 @@
+class Treasure {
+
+    field String name;
+    
+    constructor Treasure new(string aName) {
+        let name = aName;
+        return this;
+    }
+
+    /** Deallocates the object's memory. */
+    method void dispose() {
+        do name.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+    
+    method String getName() {
+        return name;
+    }
+}

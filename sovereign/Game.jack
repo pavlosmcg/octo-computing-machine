@@ -2,19 +2,29 @@ class Game {
 
     // Game tile squares
     field Array squares;
+    field Array castles;
 
     /** Constructs a new Game. */
     constructor Game new() {
         var Square curSquare;
-        var int i;
         
         // set up map:
         let squares = Array.new(9);    
-        let i = 0;
-        while (i < 9) {
-            let squares[i] = Square.new();
-            let i = i + 1;
-        }
+        let castles = Array.new(2);
+        
+        let castles[0] = Castle.new("The Demon Castle", null);
+        let castles[1] = Castle.new("The Island Fortress", null);
+        
+        let squares[0] = Square.new(null);
+        let squares[1] = Square.new(null);
+        let squares[2] = Square.new(null);
+        let squares[3] = Square.new(null);
+        let squares[4] = Square.new(null);
+        let squares[5] = Square.new(castles[0]);
+        let squares[6] = Square.new(null);
+        let squares[7] = Square.new(castles[1]);
+        let squares[8] = Square.new(null);
+
         let curSquare = squares[0];
         do curSquare.setNorth(squares[1]);
         let curSquare = squares[1];
@@ -40,6 +50,7 @@ class Game {
     /** Deallocates the object's memory. */
     method void dispose() {
         do squares.dispose();
+        do castles.dispose();
         do Memory.deAlloc(this);
         return;
     }

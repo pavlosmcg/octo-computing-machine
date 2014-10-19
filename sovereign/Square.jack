@@ -4,21 +4,29 @@ class Square {
     field Square east;
     field Square south;
     field Square west;
+    field Castle castle;
     
-    constructor Square new() {
+    constructor Square new(Castle aCastle) {
         let north = null;
         let east = null;
         let south = null;
         let west = null;
+        let castle = aCastle;
         return this;
     }
 
     /** Deallocates the object's memory. */
     method void dispose() {
+        // Game class is responsible for disposing of N,E,S,W squares.
+        do castle.dispose();
         do Memory.deAlloc(this);
         return;
     }
 
+    method Castle getCastle() {
+        return castle;
+    }
+    
     method Square getNorth(){
         return north;
     }
