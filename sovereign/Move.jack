@@ -1,0 +1,40 @@
+class Move {
+
+    function void any() {
+        var char key;
+        
+        // waits for a key to be pressed.
+        while (key = 0) {
+            let key = Keyboard.keyPressed();
+        }
+        // waits for a key to be un-pressed.
+        while (~(key = 0)){
+            let key = Keyboard.keyPressed();
+        }
+        
+        return;
+    }
+
+    function int roll() {
+        var char key;
+        var int roll;
+    
+        let roll = 1;
+                
+        // waits for a key to be pressed.
+        let key = 0;
+        while (key = 0) {
+            let roll = roll + 1;
+            if (roll > 8) {
+                let roll = 1;
+            }
+            let key = Keyboard.keyPressed();
+        }
+        // waits for a key to be un-pressed.
+        while (~(key = 0)){
+            let key = Keyboard.keyPressed();
+        }
+        
+        return roll;
+    }
+}
