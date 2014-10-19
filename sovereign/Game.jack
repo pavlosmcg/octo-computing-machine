@@ -47,25 +47,20 @@ class Game {
     /** Starts the game. Handles inputs from the user that control
      *  the square's movement, direction and size. */
     method void run() {
-        var char key;
-        var boolean exit;
-
-        let exit = false;
-
-        while (~exit) {
-            // waits for a key to be pressed.
-            while (key = 0) {
-                let key = Keyboard.keyPressed();
-            }
-
-            let exit = true;
-
-            // waits for the key to be released.
-            while (~(key = 0)) {
-                let key = Keyboard.keyPressed();
-            }
+        var Player me;
+        
+        let me = Player.new(squares[0]);
+        do me.takeTurn();
+        
+        while (~(me.getPosition() = squares[0])){
+            do me.takeTurn();
         }
-            
+        
+        // when you've got out:
+        do Screen.clearScreen();
+        do Output.moveCursor(0,0);
+        do Output.printString("You escaped the kingdom!");
+        
         return;
 	}
 }

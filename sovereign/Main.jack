@@ -14,12 +14,10 @@ class Main {
         do Move.any();
         do Intro.erase();
                 
-        let roll = Move.roll();
-        do Output.printString("You rolled a ");
-        do Output.printInt(roll);
-        do Output.println();
-    
-        do Move.any();
+        // let roll = Move.roll();
+        // do Output.printString("You rolled a ");
+        // do Output.printInt(roll);
+        // do Output.println();
             
         let game = Game.new();
         do game.run();

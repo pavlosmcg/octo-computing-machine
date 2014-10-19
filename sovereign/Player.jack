@@ -1,0 +1,79 @@
+class Player {
+
+    field Square position;
+    
+    constructor Player new(Square startPosition) {
+        let position = startPosition;
+        return this;
+    }
+
+    method Square getPosition() {
+        return position;
+    }
+    
+    method void takeTurn() {
+        var char key;
+        var char choice;
+        
+        do Screen.clearScreen();
+        do Output.moveCursor(0, 0);
+        // TODO display some graphic here - appropriate to road or fort (with name)
+        do Output.printString("Path");
+        
+        do Output.moveCursor(16, 0);
+        do Output.printString("----------------------------------------------------------------");
+        
+        // write out available directions
+        do Output.moveCursor(18, 0);
+        do Output.printString("Possible directions: ");
+        if (~(position.getNorth() = null)){
+            do Output.printString("N ");
+        }
+        if (~(position.getEast() = null)){
+            do Output.printString("E ");
+        }
+        if (~(position.getSouth() = null)){
+            do Output.printString("S ");
+        }
+        if (~(position.getWest() = null)){
+            do Output.printString("W ");
+        }
+        
+        while (true) {
+            // ask player to choose a direction
+            do Output.moveCursor(20, 19);
+            do Output.printString("Choose a direction:");
+            let key = Keyboard.readChar();
+            
+            if (key = 78) {
+                if (~(position.getNorth() = null)) {
+                    let position = position.getNorth();
+                    return;
+                }
+            }
+            if (key = 69) {
+                if (~(position.getEast() = null)) {
+                    let position = position.getEast();
+                    return;
+                }
+            }
+            if (key = 83) {
+                if (~(position.getSouth() = null)) {
+                    let position = position.getSouth();
+                    return;
+                }
+            }
+            if (key = 87) {
+                if (~(position.getWest() = null)) {
+                    let position = position.getWest();
+                    return;
+                }
+            }
+            
+            do Output.moveCursor(22, 0);
+            do Output.printString("Please enter a valid option!");
+        }
+        
+        return;
+    }
+}
