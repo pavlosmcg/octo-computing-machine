@@ -106,7 +106,7 @@ class Game {
                         do Output.moveCursor(0,0);
                         do Output.printString("You escaped the kingdom with the key!");
                         do Output.println();
-                        do Output.printString("The Supreme Custodian will has now locked the door and the magic entrance has become invisible to mortal eyes.");
+                        do Output.printString("The Supreme Custodian has now locked the door and the magic entrance has become invisible to mortal eyes.");
                         do Output.printString("Anyone still inside will be left to wander the kingdom forever!");
                         let completed = true;
                     }
