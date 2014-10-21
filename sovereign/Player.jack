@@ -1,14 +1,21 @@
 class Player {
 
     field Square position;
-    field Treasure treasure;
+    field TreasureList treasureList;
     
     constructor Player new(Square startPosition) {
         let position = startPosition;
-        // let treasures = Array.new(6);
+        let treasureList = TreasureList.new(null, null);
         return this;
     }
 
+    /** Deallocates the object's memory. */
+    method void dispose() {
+        do treasureList.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+    
     method Square getPosition() {
         return position;
     }
@@ -18,55 +25,21 @@ class Player {
         return;
     }
     
-    method void writeOutTreasures() {
-        // var int i;
-        // var Treasure curTreasure;
-        
-        do Output.printString("Treasures: ");
-        if (~(treasure = null)) {
-            do Output.printString(treasure.getName());
-        }
-        // let i = 0;
-        // while (i < 6) {
-            // let curTreasure = treasures[i];
-            // if (~(curTreasure = null)){
-                // do Output.printString(curTreasure.getName());
-                // do Output.printString("; ");
-            // }
-            // let i = i + 1;
-        // }
-        return;
+    method TreasureList getTreasureList() {
+        return treasureList;
     }
     
-    method void takeTurn() {
+    method void doMove() {
         var char key;
         var char choice;
         var int roll;
         var Castle castle;
         var boolean validInput;
-        
-        // roll the die
-        do Screen.clearScreen();
-        do Output.moveCursor(19, 15);
-        let roll = Move.roll();
-        
-        while (roll > 0) {
-            // show current position and clear the screen
-            do position.showDetails(); 
-            
-            // draw the player info box 
-            do Screen.drawRectangle(0, 158, 511, 160);
-            do Screen.drawRectangle(0, 162, 511, 164);
-        
-            // write out moves remaining
-            do Output.moveCursor(15, 0);
-            do Output.printString("Moves remaining: ");
-            do Output.printInt(roll);
-            let roll = roll -1;
             
             // write out current player's treasure stash
             do Output.moveCursor(16, 0);
-            do writeOutTreasures();
+            do Output.printString("Treasures: ");
+            do treasureList.writeOutTreasures();
             
             // write out available directions
             do Output.moveCursor(18, 0);
@@ -113,9 +86,9 @@ class Player {
                 }
                 if (key = 65) { // 'A'
                     if (~(castle = null)) {
-                        // TODO some kind of monster fight in another class
+                        // TODO some kind of monster fight to get the treasure (and put all this in another class)
                         if (~(castle.getTreasure() = null)) {
-                            let treasure = castle.getTreasure();
+                            do treasureList.add(castle.getTreasure());
                             do castle.setTreasure(null);
                         }
                         let validInput = true;
@@ -127,7 +100,6 @@ class Player {
                     do Output.printString("Please enter a valid option!");
                 }
             }
-        }
         
         return;
     }

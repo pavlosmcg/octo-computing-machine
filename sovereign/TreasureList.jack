@@ -1,0 +1,57 @@
+class TreasureList {
+
+    field Treasure item;
+    field TreasureList next;
+    
+    constructor TreasureList new(Treasure thisItem, TreasureList nextItem) {
+        let item = thisItem;
+        let next = nextItem;
+        return this;
+    }
+
+    /** Deallocates the object's memory. */
+    method void dispose() {
+        if (~(next = null)) {
+            do next.dispose();   
+        }
+        do Memory.deAlloc(this);
+        return;
+    }
+    
+    // adds the item to the end of the list
+    method void add(Treasure addItem) {
+        if (item = null) {
+            let item = addItem;
+            return;
+        }
+        if (next = null) {
+            let next = TreasureList.new(addItem, null);
+            return;
+        }        
+        do next.add(addItem);
+        return;
+    }
+    
+    method void writeOutTreasures() {
+        if (~(item = null)) {
+            do Output.printString(item.getName());
+            do Output.printString("; ");
+        }
+        if (~(next = null)) {
+            do next.writeOutTreasures();
+        }
+        return;
+    }
+    
+    method boolean containsKeyToKingdom(Treasure winning) {
+        if (~(item = null)) {
+            if (item = winning) {
+                return true;
+            }
+        }
+        if (~(next = null)) {
+            return next.containsKeyToKingdom(winning);
+        }
+        return false;
+    }
+}

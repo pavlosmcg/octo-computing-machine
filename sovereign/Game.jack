@@ -11,21 +11,21 @@ class Game {
         
         // set up map:
         let squares = Array.new(9);    
-        let castles = Array.new(2);
-        let treasures = Array.new(4);
+        let castles = Array.new(3);
+        let treasures = Array.new(3);
         
         let treasures[0] = Treasure.new("The Key to the Kingdom");
         let treasures[1] = Treasure.new("The Ring of Power");
-        let treasures[2] = Treasure.new("The Chalice");
-        let treasures[3] = Treasure.new("The Runesword");
+        let treasures[2] = Treasure.new("The Runesword");
         
         let castles[0] = Castle.new("The Demon Castle", treasures[0]);
-        let castles[1] = Castle.new("The Island Fortress", treasures[3]);
+        let castles[1] = Castle.new("The Island Fortress", treasures[2]);
+        let castles[2] = Castle.new("The Evil Tower", treasures[1]);
         
         let squares[0] = Square.new(null);
         let squares[1] = Square.new(null);
         let squares[2] = Square.new(null);
-        let squares[3] = Square.new(null);
+        let squares[3] = Square.new(castles[2]);
         let squares[4] = Square.new(null);
         let squares[5] = Square.new(castles[0]);
         let squares[6] = Square.new(null);
@@ -58,25 +58,62 @@ class Game {
     method void dispose() {
         do squares.dispose();
         do castles.dispose();
+        do treasures.dispose();
         do Memory.deAlloc(this);
         return;
     }
 
     method void run() {
         var Player me;
+        var int roll;
+        var Square position;
+        var boolean completed;
+        var TreasureList treasureList;
         
+        let completed = false;
         let me = Player.new(squares[0]);
-        do me.takeTurn();
         
-        while (~(me.getPosition() = squares[0])){
-            do me.takeTurn();
+        while (~(completed)){
+            
+            // roll the die
+            do Screen.clearScreen();
+            do Output.moveCursor(19, 15);
+            let roll = Move.roll();
+            while (roll > 0) {
+            
+                // show current position and clear the screen
+                let position = me.getPosition();
+                do position.showDetails(); 
+                
+                // draw the player info box 
+                do Screen.drawRectangle(0, 158, 511, 160);
+                do Screen.drawRectangle(0, 162, 511, 164);
+            
+                // write out moves remaining
+                do Output.moveCursor(15, 0);
+                do Output.printString("Moves remaining: ");
+                do Output.printInt(roll);
+                
+                // ask the player for some input
+                do me.doMove();
+                let roll = roll -1;
+                
+                // when you've got back to the start:
+                if (me.getPosition() = squares[0]) {
+                    let treasureList = me.getTreasureList();
+                    if (treasureList.containsKeyToKingdom(treasures[0]) = true) { //doesn't work - TODO fix this
+                        do Screen.clearScreen();
+                        do Output.moveCursor(0,0);
+                        do Output.printString("You escaped the kingdom with the key!");
+                        do Output.println();
+                        do Output.printString("The Supreme Custodian will has now locked the door and the magic entrance has become invisible to mortal eyes.");
+                        do Output.printString("Anyone still inside will be left to wander the kingdom forever!");
+                        let completed = true;
+                    }
+                }
+            }
         }
-        
-        // when you've got out:
-        do Screen.clearScreen();
-        do Output.moveCursor(0,0);
-        do Output.printString("You escaped the kingdom!");
-        
+
         return;
 	}
 }
