@@ -3,6 +3,7 @@ class Game {
     // Game tile squares
     field Array squares;
     field Array castles;
+    field Array treasures;
 
     /** Constructs a new Game. */
     constructor Game new() {
@@ -11,9 +12,15 @@ class Game {
         // set up map:
         let squares = Array.new(9);    
         let castles = Array.new(2);
+        let treasures = Array.new(4);
         
-        let castles[0] = Castle.new("The Demon Castle", null);
-        let castles[1] = Castle.new("The Island Fortress", null);
+        let treasures[0] = Treasure.new("The Key to the Kingdom");
+        let treasures[1] = Treasure.new("The Ring of Power");
+        let treasures[2] = Treasure.new("The Chalice");
+        let treasures[3] = Treasure.new("The Runesword");
+        
+        let castles[0] = Castle.new("The Demon Castle", treasures[0]);
+        let castles[1] = Castle.new("The Island Fortress", treasures[3]);
         
         let squares[0] = Square.new(null);
         let squares[1] = Square.new(null);
@@ -55,8 +62,6 @@ class Game {
         return;
     }
 
-    /** Starts the game. Handles inputs from the user that control
-     *  the square's movement, direction and size. */
     method void run() {
         var Player me;
         

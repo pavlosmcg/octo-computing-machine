@@ -3,7 +3,7 @@ class Castle {
     field Treasure treasure;
     field String name;
     
-    constructor Castle new(string aName, Treasure aTreasure) {
+    constructor Castle new(String aName, Treasure aTreasure) {
         let name = aName;
         let treasure = aTreasure;
         return this;

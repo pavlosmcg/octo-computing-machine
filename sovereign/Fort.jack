@@ -1,0 +1,30 @@
+class Fort {
+    
+    function void erase() {
+        do Screen.clearScreen();
+        return;
+    }
+
+    function void draw() {
+        do Memory.poke(16405,384);
+        do Memory.poke(16406,3);
+        do Memory.poke(16410,-15604);
+        do Memory.poke(16411,-31176);
+        do Memory.poke(16412,12431);
+        do Memory.poke(16413,28);
+        do Memory.poke(16414,-64);
+        do Memory.poke(16415,28735);
+        do Memory.poke(16435,2048);
+        do Memory.poke(16436,12);
+        do Memory.poke(16438,4100);
+        do Memory.poke(16440,4);
+        do Memory.poke(16442,-15936);
+        do Memory.poke(16443,-2048);
+        do Memory.poke(16444,-2033);
+        do Memory.poke(16445,3);
+        do Memory.poke(16446,-900);
+        do Memory.poke(16447,31758);
+
+        return;
+	}
+}

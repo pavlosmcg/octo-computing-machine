@@ -1,11 +1,11 @@
 class Player {
 
     field Square position;
-    field Array treasures;
+    field Treasure treasure;
     
     constructor Player new(Square startPosition) {
         let position = startPosition;
-        let treasures = Array.new(6);
+        // let treasures = Array.new(6);
         return this;
     }
 
@@ -13,97 +13,120 @@ class Player {
         return position;
     }
     
+    method void setPosition(Square aPosition) {
+        let position = aPosition;
+        return;
+    }
+    
     method void writeOutTreasures() {
-        var int i;
-        var Treasure curTreasure;
+        // var int i;
+        // var Treasure curTreasure;
         
         do Output.printString("Treasures: ");
-        let i = 0;
-        while (i < 6) {
-            let curTreasure = treasures[i];
-            if (~(curTreasure = null)){
-                do Output.printString(curTreasure.getName());
-                do Output.printString("; ");
-            }
-            let i = i + 1;
+        if (~(treasure = null)) {
+            do Output.printString(treasure.getName());
         }
+        // let i = 0;
+        // while (i < 6) {
+            // let curTreasure = treasures[i];
+            // if (~(curTreasure = null)){
+                // do Output.printString(curTreasure.getName());
+                // do Output.printString("; ");
+            // }
+            // let i = i + 1;
+        // }
         return;
     }
     
     method void takeTurn() {
         var char key;
         var char choice;
+        var int roll;
         var Castle castle;
+        var boolean validInput;
         
-        // Display current location details
+        // roll the die
         do Screen.clearScreen();
-        do Output.moveCursor(0, 0);
-        let castle = position.getCastle();
-        if (castle = null) {
-            // TODO path graphic
-            do Output.printString("Location: ");
-            do Output.printString("On a dark desert highway...");
-        }
-        if (~(castle = null)) {
-            // TODO castle graphic
-            do Output.printString("Location: ");
-            do Output.printString(castle.getName());
-        }
+        do Output.moveCursor(19, 15);
+        let roll = Move.roll();
         
-        do Output.moveCursor(15, 0);
-        do Output.printString("----------------------------------------------------------------");
-        // write out current player's treasure stash
-        do writeOutTreasures();
-        
-        // write out available directions
-        do Output.moveCursor(18, 0);
-        do Output.printString("Possible directions: ");
-        if (~(position.getNorth() = null)){
-            do Output.printString("N ");
-        }
-        if (~(position.getEast() = null)){
-            do Output.printString("E ");
-        }
-        if (~(position.getSouth() = null)){
-            do Output.printString("S ");
-        }
-        if (~(position.getWest() = null)){
-            do Output.printString("W ");
-        }
-        
-        // ask player to choose a direction until they input something sensible
-        while (true) {
-            do Output.moveCursor(20, 19);
-            do Output.printString("Choose a direction:");
-            let key = Keyboard.readChar();
+        while (roll > 0) {
+            // show current position and clear the screen
+            do position.showDetails(); 
             
-            if (key = 78) {
-                if (~(position.getNorth() = null)) {
-                    let position = position.getNorth();
-                    return;
-                }
-            }
-            if (key = 69) {
-                if (~(position.getEast() = null)) {
-                    let position = position.getEast();
-                    return;
-                }
-            }
-            if (key = 83) {
-                if (~(position.getSouth() = null)) {
-                    let position = position.getSouth();
-                    return;
-                }
-            }
-            if (key = 87) {
-                if (~(position.getWest() = null)) {
-                    let position = position.getWest();
-                    return;
-                }
+            // draw the player info box 
+            do Screen.drawRectangle(0, 158, 511, 160);
+            do Screen.drawRectangle(0, 162, 511, 164);
+        
+            // write out moves remaining
+            do Output.moveCursor(15, 0);
+            do Output.printString("Moves remaining: ");
+            do Output.printInt(roll);
+            let roll = roll -1;
+            
+            // write out current player's treasure stash
+            do Output.moveCursor(16, 0);
+            do writeOutTreasures();
+            
+            // write out available directions
+            do Output.moveCursor(18, 0);
+            do position.showPossibleDirections();
+            do Output.println();
+            
+            // write out available actions
+            let castle = position.getCastle();
+            if (~(castle = null)){
+                do Output.printString("Attack Castle: A");
+                do Output.println();
             }
             
-            do Output.moveCursor(22, 0);
-            do Output.printString("Please enter a valid option!");
+            // ask player to choose an action until they input something sensible
+            let validInput = false;
+            while (~(validInput)) {
+                do Output.moveCursor(21, 19);
+                do Output.printString("Choose an action:");
+                let key = Keyboard.readChar();
+                
+                if (key = 78) {
+                    if (~(position.getNorth() = null)) {
+                        let position = position.getNorth();
+                        let validInput = true;
+                    }
+                }
+                if (key = 69) {
+                    if (~(position.getEast() = null)) {
+                        let position = position.getEast();
+                        let validInput = true;
+                    }
+                }
+                if (key = 83) {
+                    if (~(position.getSouth() = null)) {
+                        let position = position.getSouth();
+                        let validInput = true;
+                    }
+                }
+                if (key = 87) {
+                    if (~(position.getWest() = null)) {
+                        let position = position.getWest();
+                        let validInput = true;
+                    }
+                }
+                if (key = 65) { // 'A'
+                    if (~(castle = null)) {
+                        // TODO some kind of monster fight in another class
+                        if (~(castle.getTreasure() = null)) {
+                            let treasure = castle.getTreasure();
+                            do castle.setTreasure(null);
+                        }
+                        let validInput = true;
+                    }
+                }
+                
+                if (~(validInput)) {
+                    do Output.moveCursor(22, 0);
+                    do Output.printString("Please enter a valid option!");
+                }
+            }
         }
         
         return;

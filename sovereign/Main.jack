@@ -6,18 +6,12 @@ class Main {
     /** Initializes a new game and starts it. */    
     function void main() {
         var Game game;
-        var int roll;     
         
         do Intro.draw();        
         do Output.moveCursor(22, 19);
         do Output.printString("Press any key to start...");
         do Move.any();
         do Intro.erase();
-                
-        // let roll = Move.roll();
-        // do Output.printString("You rolled a ");
-        // do Output.printInt(roll);
-        // do Output.println();
             
         let game = Game.new();
         do game.run();

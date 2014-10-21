@@ -20,7 +20,7 @@ class Move {
         var int roll;
     
         let roll = 1;
-                
+        do Output.printString("Press any key to roll the die... ");
         // waits for a key to be pressed.
         let key = 0;
         while (key = 0) {
@@ -34,6 +34,8 @@ class Move {
         while (~(key = 0)){
             let key = Keyboard.keyPressed();
         }
+        do Output.printInt(roll);
+        do Sys.wait(1000);
         
         return roll;
     }

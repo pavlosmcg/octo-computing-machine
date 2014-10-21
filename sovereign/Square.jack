@@ -23,6 +23,40 @@ class Square {
         return;
     }
 
+    method void showDetails() {
+        // Display current location details
+        do Screen.clearScreen();
+        do Output.moveCursor(0, 0);
+        if (castle = null) {
+            do Path.draw();
+            do Output.printString("Location: ");
+            do Output.printString("On a dark desert highway...");
+        }
+        if (~(castle = null)) {
+            do Fort.draw();
+            do Output.printString("Location: ");
+            do Output.printString(castle.getName());
+        }
+        return;
+    }
+    
+    method void showPossibleDirections() {
+        do Output.printString("Possible directions: ");
+        if (~(north = null)){
+            do Output.printString("N ");
+        }
+        if (~(east = null)){
+            do Output.printString("E ");
+        }
+        if (~(south = null)){
+            do Output.printString("S ");
+        }
+        if (~(west = null)){
+            do Output.printString("W ");
+        }
+        return;
+    }
+    
     method Castle getCastle() {
         return castle;
     }
