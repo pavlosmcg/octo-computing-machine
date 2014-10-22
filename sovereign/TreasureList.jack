@@ -44,8 +44,13 @@ class TreasureList {
     }
     
     method boolean containsKeyToKingdom(Treasure winning) {
+        var String winningName;
+        var String itemName;
+        
         if (~(item = null)) {
-            if (item = winning) {
+            let winningName = winning.getName();
+            let itemName = item.getName();
+            if (itemName = winningName) {
                 return true;
             }
         }

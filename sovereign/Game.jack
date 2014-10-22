@@ -4,6 +4,7 @@ class Game {
     field Array squares;
     field Array castles;
     field Array treasures;
+    field Array players;
 
     /** Constructs a new Game. */
     constructor Game new() {
@@ -13,6 +14,7 @@ class Game {
         let squares = Array.new(9);    
         let castles = Array.new(3);
         let treasures = Array.new(3);
+        let players = Array.new(2);
         
         let treasures[0] = Treasure.new("The Key to the Kingdom");
         let treasures[1] = Treasure.new("The Ring of Power");
@@ -31,6 +33,9 @@ class Game {
         let squares[6] = Square.new(null);
         let squares[7] = Square.new(castles[1]);
         let squares[8] = Square.new(null);
+        
+        let players[0] = Player.new(squares[0]);
+        let players[1] = Player.new(squares[0]);
 
         let curSquare = squares[0];
         do curSquare.setNorth(squares[1]);
@@ -64,26 +69,32 @@ class Game {
     }
 
     method void run() {
-        var Player me;
+        var Player currentPlayer;
         var int roll;
         var Square position;
-        var boolean completed;
         var TreasureList treasureList;
+        var int numPlayer; let numPlayer = 0;
         
-        let completed = false;
-        let me = Player.new(squares[0]);
-        
-        while (~(completed)){
+        while (true){
+
+            let currentPlayer = players[numPlayer];
             
             // roll the die
             do Screen.clearScreen();
+            do Output.moveCursor(17, 25);
+            do Output.printString("Player ");
+            do Output.printInt(numPlayer+1);
             do Output.moveCursor(19, 15);
             let roll = Move.roll();
             while (roll > 0) {
             
                 // show current position and clear the screen
-                let position = me.getPosition();
+                let position = currentPlayer.getPosition();
                 do position.showDetails(); 
+                
+                do Output.println();
+                do Output.printString("Player ");
+                do Output.printInt(numPlayer+1);
                 
                 // draw the player info box 
                 do Screen.drawRectangle(0, 158, 511, 160);
@@ -95,22 +106,39 @@ class Game {
                 do Output.printInt(roll);
                 
                 // ask the player for some input
-                do me.doMove();
+                do currentPlayer.doMove();
                 let roll = roll -1;
                 
+                if (roll = 0) {
+                    do Sys.wait(3000);
+                }
+                
                 // when you've got back to the start:
-                if (me.getPosition() = squares[0]) {
-                    let treasureList = me.getTreasureList();
+                if (currentPlayer.getPosition() = squares[0]) {
+                    let treasureList = currentPlayer.getTreasureList();
                     if (treasureList.containsKeyToKingdom(treasures[0]) = true) { //doesn't work - TODO fix this
                         do Screen.clearScreen();
                         do Output.moveCursor(0,0);
-                        do Output.printString("You escaped the kingdom with the key!");
+                        do Output.printString("Player ");
+                        do Output.printInt(numPlayer+1);
+                        do Output.printString("! You escaped the kingdom with the key!");
                         do Output.println();
-                        do Output.printString("The Supreme Custodian has now locked the door and the magic entrance has become invisible to mortal eyes.");
-                        do Output.printString("Anyone still inside will be left to wander the kingdom forever!");
-                        let completed = true;
+                        do Output.printString("The Supreme Custodian has now locked the door and the magic");
+                        do Output.println();
+                        do Output.printString("entrance has become invisible to mortal eyes. Anyone still");
+                        do Output.println();
+                        do Output.printString("inside will be left to wander the kingdom forever!");
+                        return;
                     }
                 }
+            }
+              
+            // Change the current player to next, in the end go back
+            // to the first player
+            if (numPlayer > 0) {
+                let numPlayer = 0;
+            } else {
+                let numPlayer = numPlayer + 1;
             }
         }
 

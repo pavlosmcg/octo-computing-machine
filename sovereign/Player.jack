@@ -92,6 +92,10 @@ class Player {
                             do castle.setTreasure(null);
                         }
                         let validInput = true;
+                        
+                        do Output.moveCursor(16, 0);
+                        do Output.printString("Treasures: ");
+                        do treasureList.writeOutTreasures();
                     }
                 }
                 
