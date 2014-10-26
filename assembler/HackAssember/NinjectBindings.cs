@@ -5,6 +5,7 @@ using Assembler.Instructions;
 using Assembler.Parsing;
 using Assembler.Sanitising;
 using Assembler.SymbolResolution;
+using Assembler.SymbolResolution.Hack;
 using Ninject.Modules;
 
 namespace HackAssember

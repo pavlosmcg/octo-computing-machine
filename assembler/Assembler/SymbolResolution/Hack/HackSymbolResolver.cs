@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Assembler.Instructions;
 
-namespace Assembler.SymbolResolution
+namespace Assembler.SymbolResolution.Hack
 {
     public class SymbolResolver : ISymbolResolver
     {
-        private IDictionary<string, int> symbolTable = new Dictionary<string, int>()
+        private readonly IDictionary<string, int> _symbolTable = new Dictionary<string, int>()
             {
                 {"SP", 0},
                 {"LCL", 1},
@@ -58,10 +57,10 @@ namespace Assembler.SymbolResolution
                 {
                     var labelInstruction = (LabelInstruction) list[line];
                     int lineNumber;
-                    if (!symbolTable.TryGetValue(labelInstruction.Label, out lineNumber))
+                    if (!_symbolTable.TryGetValue(labelInstruction.Label, out lineNumber))
                     {
                         lineNumber = line + 1; // get the number of the next line in the assembled program
-                        symbolTable.Add(labelInstruction.Label, lineNumber);
+                        _symbolTable.Add(labelInstruction.Label, lineNumber);
                         list.RemoveAt(line);
                         return ResolveLabels(list); // recursively continue with the rest of the program to be assembled
                     }
@@ -83,10 +82,10 @@ namespace Assembler.SymbolResolution
                     int address;
 
                     // if it's not in the symbol table, add the variable
-                    if (!symbolTable.TryGetValue(variableInstruction.Label, out address))
+                    if (!_symbolTable.TryGetValue(variableInstruction.Label, out address))
                     {
                         address = ++_variableCounter; // get the next variable address
-                        symbolTable.Add(variableInstruction.Label, address);
+                        _symbolTable.Add(variableInstruction.Label, address);
                     }
 
                     // convert this variable instruction into a resolved address instruction
