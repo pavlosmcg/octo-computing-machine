@@ -99,6 +99,10 @@
     <Compile Include="Sanitising\IWhitespaceRemover.cs" />
     <Compile Include="Sanitising\Sanitiser.cs" />
     <Compile Include="Sanitising\WhitespaceRemover.cs" />
+    <Compile Include="SymbolResolution\Hack\HackLabelResolver.cs" />
+    <Compile Include="SymbolResolution\Hack\HackVariableResolver.cs" />
+    <Compile Include="SymbolResolution\IVariableResolver.cs" />
+    <Compile Include="SymbolResolution\ILabelResolver.cs" />
     <Compile Include="SymbolResolution\ISymbolResolver.cs" />
     <Compile Include="SymbolResolution\Hack\HackSymbolResolver.cs" />
   </ItemGroup>

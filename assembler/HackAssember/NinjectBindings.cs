@@ -33,9 +33,6 @@ namespace HackAssember
             Bind<IComputeDestinationParser>().To<ComputeDestinationParser>();
             Bind<IComputeJumpParser>().To<ComputeJumpParser>();
 
-            // symbol resolution
-            Bind<ISymbolResolver>().To<SymbolResolver>();
-
             // binary assembly
             Bind<IBinaryAssembler>().To<BinaryAssembler>();
             Bind<IInstructionVisitor<string[]>>().To<AssemblyInstructionVisitor>();
@@ -44,6 +41,9 @@ namespace HackAssember
             Bind<IHackComputeBitsAssembler>().To<HackComputeBitsAssembler>();
             Bind<IInstructionAssembler<ComputeInstruction>>().To<HackComputeInstructionAssembler>();
             Bind<IInstructionAssembler<AddressInstruction>>().To<HackAddressInstructionAssembler>();
+            Bind<ISymbolResolver>().To<HackSymbolResolver>();
+            Bind<ILabelResolver>().To<HackLabelResolver>();
+            Bind<IVariableResolver>().To<HackVariableResolver>();
         }
     }
 }

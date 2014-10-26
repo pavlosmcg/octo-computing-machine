@@ -4,8 +4,11 @@ using Assembler.Instructions;
 
 namespace Assembler.SymbolResolution.Hack
 {
-    public class SymbolResolver : ISymbolResolver
+    public class HackSymbolResolver : ISymbolResolver
     {
+        private readonly ILabelResolver _hackLabelResolver;
+        private readonly IVariableResolver _hackVariableResolver;
+
         private readonly IDictionary<string, int> _symbolTable = new Dictionary<string, int>()
             {
                 {"SP", 0},
@@ -33,67 +36,19 @@ namespace Assembler.SymbolResolution.Hack
                 {"KBD", 24576}
             };
 
-        private int _variableCounter = 15;
+        public HackSymbolResolver(ILabelResolver hackLabelResolver, IVariableResolver hackVariableResolver)
+        {
+            _hackLabelResolver = hackLabelResolver;
+            _hackVariableResolver = hackVariableResolver;
+        }
 
         public IInstruction[] ResolveSymbolicInstructions(IInstruction[] instructions)
         {
-            // must go through labels first, removing them when they've been added to the symbol table!
-            var linesWithLabelsRemoved = ResolveLabels(instructions);
+            // must go through labels first, removing them when they've been added to the symbol table
+            var linesWithLabelsRemoved = _hackLabelResolver.ResolveLabels(_symbolTable, instructions);
 
             // then go through variables, resolving them after adding to table if not already there
-            return ResolveVariables(linesWithLabelsRemoved);
-        }
-
-        private IInstruction[] ResolveLabels(IEnumerable<IInstruction> instructions)
-        {
-            // figure out whether it's a label
-            // if it's a label
-            // -- if it doesn't exist add it to the table and remove the instruction
-            // -- if it does already exist, change it to an unknown instruction
-            var list = instructions.ToList();
-            for (int line = 0; line < list.Count(); line++)
-            {
-                if (list[line] is LabelInstruction)
-                {
-                    var labelInstruction = (LabelInstruction) list[line];
-                    int lineNumber;
-                    if (!_symbolTable.TryGetValue(labelInstruction.Label, out lineNumber))
-                    {
-                        lineNumber = line + 1; // get the number of the next line in the assembled program
-                        _symbolTable.Add(labelInstruction.Label, lineNumber);
-                        list.RemoveAt(line);
-                        return ResolveLabels(list); // recursively continue with the rest of the program to be assembled
-                    }
-                    list[line] = new UnknownInstruction(string.Format("Label '{0}' is not allowed or is defined more than once", labelInstruction.Label));
-                }
-            }
-
-            return list.ToArray();
-        }
-
-        private IInstruction[] ResolveVariables(IEnumerable<IInstruction> instructions)
-        {
-            var list = instructions.ToList();
-            for (var line = 0; line < list.Count(); line++)
-            {
-                if (list[line] is VariableInstruction)
-                {
-                    var variableInstruction = (VariableInstruction) list[line];
-                    int address;
-
-                    // if it's not in the symbol table, add the variable
-                    if (!_symbolTable.TryGetValue(variableInstruction.Label, out address))
-                    {
-                        address = ++_variableCounter; // get the next variable address
-                        _symbolTable.Add(variableInstruction.Label, address);
-                    }
-
-                    // convert this variable instruction into a resolved address instruction
-                    list[line] = new AddressInstruction(address);
-                }
-            }
-
-            return list.ToArray();
+            return _hackVariableResolver.ResolveVariables(_symbolTable, linesWithLabelsRemoved);
         }
     }
 }
