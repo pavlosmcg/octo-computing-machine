@@ -37,6 +37,10 @@ namespace HackAssember
             Bind<IBinaryAssembler>().To<BinaryAssembler>();
             Bind<IInstructionVisitor<string[]>>().To<AssemblyInstructionVisitor>();
 
+            // symbol resolution
+            Bind<IInstructionVisitor<bool>>().To<IsLabelVisitor>().WhenInjectedInto<ILabelResolver>();
+            Bind<IInstructionVisitor<bool>>().To<IsVariableVisitor>().WhenInjectedInto<IVariableResolver>();
+
             // hack specific bindings
             Bind<IHackComputeBitsAssembler>().To<HackComputeBitsAssembler>();
             Bind<IInstructionAssembler<ComputeInstruction>>().To<HackComputeInstructionAssembler>();

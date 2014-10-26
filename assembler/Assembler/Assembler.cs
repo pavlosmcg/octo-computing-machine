@@ -31,7 +31,7 @@ namespace Assembler
             IInstruction[] instructions = cleanLines.Select(l => _instructionParser.ParseInstruction(l)).ToArray();
 
             // resolve symbolic instructions
-            IInstruction[] resolvedInstructions = _symbolResolver.ResolveSymbolicInstructions(instructions);
+            IInstruction[] resolvedInstructions = _symbolResolver.ResolveSymbolicInstructions(instructions).ToArray();
 
             // assemble each instruction into binary line(s)
             string[] assembledLines = resolvedInstructions.SelectMany(i => _binaryAssembler.AssembleInstruction(i)).ToArray();

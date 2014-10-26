@@ -42,13 +42,13 @@ namespace Assembler.SymbolResolution.Hack
             _hackVariableResolver = hackVariableResolver;
         }
 
-        public IInstruction[] ResolveSymbolicInstructions(IInstruction[] instructions)
+        public IEnumerable<IInstruction> ResolveSymbolicInstructions(IInstruction[] instructions)
         {
             // must go through labels first, removing them when they've been added to the symbol table
-            var linesWithLabelsRemoved = _hackLabelResolver.ResolveLabels(_symbolTable, instructions);
+            var linesWithLabelsRemoved = _hackLabelResolver.ResolveLabels(_symbolTable, instructions).ToArray();
 
             // then go through variables, resolving them after adding to table if not already there
-            return _hackVariableResolver.ResolveVariables(_symbolTable, linesWithLabelsRemoved);
+            return _hackVariableResolver.ResolveVariables(_symbolTable, linesWithLabelsRemoved).ToArray();
         }
     }
 }

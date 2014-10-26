@@ -62,6 +62,8 @@
     <Compile Include="Sanitising\CommentRemoverTests.cs" />
     <Compile Include="Sanitising\SanitiserTests.cs" />
     <Compile Include="Sanitising\WhiteSpaceRemoverTests.cs" />
+    <Compile Include="SymbolResolution\HackLabelResolverTests.cs" />
+    <Compile Include="SymbolResolution\HackVariableResolverTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

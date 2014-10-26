@@ -1,9 +1,10 @@
-﻿using Assembler.Instructions;
+﻿using System.Collections.Generic;
+using Assembler.Instructions;
 
 namespace Assembler.SymbolResolution
 {
     public interface ISymbolResolver
     {
-        IInstruction[] ResolveSymbolicInstructions(IInstruction[] instructions);
+        IEnumerable<IInstruction> ResolveSymbolicInstructions(IInstruction[] instructions);
     }
 }

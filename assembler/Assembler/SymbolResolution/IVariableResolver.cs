@@ -8,6 +8,6 @@ namespace Assembler.SymbolResolution
         /// <summary>
         /// Runs through variables, resolving to address instructions after adding them to the symbol table if not already there
         /// </summary>
-        IInstruction[] ResolveVariables(IDictionary<string, int> symbolTable, IEnumerable<IInstruction> instructions);
+        IEnumerable<IInstruction> ResolveVariables(IDictionary<string, int> symbolTable, IEnumerable<IInstruction> instructions);
     }
 }

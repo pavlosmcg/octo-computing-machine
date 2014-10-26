@@ -6,16 +6,22 @@ namespace Assembler.SymbolResolution.Hack
 {
     public class HackVariableResolver : IVariableResolver
     {
-        public IInstruction[] ResolveVariables(IDictionary<string, int> symbolTable, IEnumerable<IInstruction> instructions)
+        private readonly IInstructionVisitor<bool> _isVariableVisitor;
+
+        public HackVariableResolver(IInstructionVisitor<bool> isVariableVisitor)
+        {
+            _isVariableVisitor = isVariableVisitor;
+        }
+
+        public IEnumerable<IInstruction> ResolveVariables(IDictionary<string, int> symbolTable, IEnumerable<IInstruction> instructions)
         {
             var variableCounter = 15;
 
-            var list = instructions.ToList();
-            for (var line = 0; line < list.Count(); line++)
+            foreach (var instruction in instructions)
             {
-                if (list[line] is VariableInstruction)
+                if (instruction.Accept(_isVariableVisitor))
                 {
-                    var variableInstruction = (VariableInstruction) list[line];
+                    var variableInstruction = (VariableInstruction) instruction;
                     int address;
 
                     // if it's not in the symbol table, add the variable
@@ -26,11 +32,13 @@ namespace Assembler.SymbolResolution.Hack
                     }
 
                     // convert this variable instruction into a resolved address instruction
-                    list[line] = new AddressInstruction(address);
+                    yield return new AddressInstruction(address);
+                }
+                else
+                {
+                    yield return instruction;    
                 }
             }
-
-            return list.ToArray();
         }
     }
 }

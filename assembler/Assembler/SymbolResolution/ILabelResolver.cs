@@ -8,6 +8,6 @@ namespace Assembler.SymbolResolution
         /// <summary>
         /// Runs through label instructions, removing them when they've been added to the symbol table.
         /// </summary>
-        IInstruction[] ResolveLabels(IDictionary<string, int> symbolTable, IEnumerable<IInstruction> instructions);
+        IEnumerable<IInstruction> ResolveLabels(IDictionary<string, int> symbolTable, IEnumerable<IInstruction> instructions);
     }
 }

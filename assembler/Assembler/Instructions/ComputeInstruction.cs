@@ -8,7 +8,7 @@ namespace Assembler.Instructions
         private readonly string _computation;
         private readonly ComputeJumpType _jumpType;
 
-        public ComputeInstruction(ComputeDestinationType destinationType, string computation, ComputeJumpType jumpType)
+        public ComputeInstruction(ComputeDestinationType destinationType, string computation, ComputeJumpType jumpType = ComputeJumpType.None)
         {
             _destinationType = destinationType;
             _computation = computation;
