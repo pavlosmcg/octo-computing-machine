@@ -1,0 +1,7 @@
+Class <- *ws 'class' +ws Identifier *ws '{'  *(*ws ClassVarDec) *(*ws SubroutineDec) *ws '}'
+ClassVarDec <- ('static'|'field') +ws Type +ws Identifier  *(*ws ',' *ws Identifier) *ws ';' 
+SubroutineDec <- ('constructor'|'method'|'function') +ws (Type|'void') +ws Identifier *ws '(' *ws ')' *ws '{' *ws '}'
+ParameterList <- ?(Type +ws Identifier  *(*ws ',' *ws Type +ws Identifier))
+Type <- ('int'|'char'|'boolean'|Identifier)
+Identifier <- [a-zA-Z_] *[0-9a-zA-Z_]
+ws <: [ \t\r\n]
