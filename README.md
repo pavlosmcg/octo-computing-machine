@@ -1,4 +1,4 @@
-furry-octo-computing-machine
+octo-computing-machine
 ============================
 
 | inM  |  instruction   |reset| outM  |writeM |addre| pc  |DRegiste|
